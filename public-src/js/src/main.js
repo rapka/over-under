@@ -29,10 +29,10 @@ var canvas = document.getElementById('c'),
     }, fail),
     options = {
         iterations: 32,
-        mouse_force: 1,
-        resolution: 0.5,
-        cursor_size: 100,
-        step: 1/60
+        mouse_force: 2,
+        resolution: 1,
+        cursor_size: 200,
+        step: 1/120
     },
     gui = new dat.GUI(),
     clock = new Clock(canvas),
