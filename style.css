@@ -1,4 +1,4 @@
-html, body {
+html, body{
     width: 100%;
     height: 100%;
     margin: 0;
@@ -12,23 +12,6 @@ html, body {
     width: 100%;
     height: 40px;
     padding: 8px;
-    #social {
-        position: absolute;
-        right: 0;
-        top: 32px;
-    }
-    & > * {
-        display: inline-block;
-        vertical-align: baseline;
-        color: #fff;
-        opacity: 0.5;
-    }
-    & > *:hover {
-        opacity: 1.0;
-    }
-    h1 {
-        padding-right: 8px;
-    }
 }
 #cc, #video {
     position: absolute;
@@ -39,41 +22,63 @@ html, body {
 }
 #video {
     display: none;
-    iframe {
-        width: 100%;
-        height: 100%;
-    }
+}
+#video iframe {
+    width: 100%;
+    height: 100%;
 }
 #c {
     z-index: 1;
     width: 100%;
     height: 100%;
 }
-#social {
-    & > * {
-        vertical-align: top;
-        display: inline;
-    }
-    .fb-like {
-        * {
-            vertical-align: top;
-        }
-    }
+
+#header #social {
+    position: absolute;
+    right: 0;
+    top: 32px;
+}
+
+#social > * {
+    vertical-align: top;
+    display: inline;
+}
+#social .fb-like * {
+    vertical-align: top;
+}
+
+#header > *{
+    display: inline-block;
+    vertical-align: baseline;
+    color: #fff;
+    opacity: 0.5;
+}
+
+#header > *:hover {
+    opacity: 1.0;
 }
 #header a, #header a {
     color: #fff;
     text-decoration: none;
 }
+
+#header h1 {
+    padding-right: 8px;
+}
+
 #menu {
     background-color: #333;
     padding: 4px 0;
-    & > span {
-        padding: 0 8px;
-    }
 }
-.fullscreen, .generate-world, .show-controls {
+
+#menu > span {
+    padding: 0 8px;
+}
+
+.fullscreen, .generate-world, .show-controls  {
     cursor: pointer;
 }
+
 #footer {
     position: absolute;
     bottom: 0;
@@ -83,22 +88,27 @@ html, body {
     color: white;
     opacity: 0.5;
     padding-left: 8px;
-    a {
-        color: #ffffff;
-    }
-    a:hover {
-        text-shadow: white 0 0 5px;
-    }
 }
+#footer:hover {
+}
+#footer a {
+    color: #ffffff;
+}
+#footer a:hover {
+    text-shadow: white 0 0 5px;
+}
+
 #loading {
     font-size: 2em;
     line-height: 2em;
     padding: 1em;
-    .status {
-        font-family: Monospace, mono-space;
-        letter-spacing: 0.3em;
-    }
 }
+#loading .status {
+    font-family: Monospace, mono-space;
+    letter-spacing: 0.3em;
+}
+
+
 #debug {
     z-index: 200;
     position: absolute;
@@ -109,6 +119,7 @@ html, body {
     background-color: rgba(0, 0, 0, 0.8);
     display: none;
 }
+
 #perfhub {
     display: none;
     position: absolute;
@@ -117,6 +128,7 @@ html, body {
     right: 0px;
     background-color: black;
 }
+
 canvas:-webkit-full-screen {
     width: 100% !important;
     height: 100% !important;
@@ -125,6 +137,7 @@ canvas:-moz-full-screen {
     width: 100% !important;
     height: 100% !important;
 }
+
 #controls {
     position: absolute;
     left: 50%;
@@ -147,10 +160,8 @@ canvas:-moz-full-screen {
     color: #333;
     background-color: #fff;
 }
-body {
-    .dg.ac {
-        top: 60px;
-    }
+body .dg.ac {
+    top: 60px;
 }
 a {
     color: #f00;

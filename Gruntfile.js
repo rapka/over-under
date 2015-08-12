@@ -89,6 +89,8 @@ module.exports = function(grunt) {
 					src: [
 					'style/**/*.css',
 					'js/**/*.js',
+					'js/**/*.frag',
+					'js/**/*.vertex',
 					'img/**/*'
 					],
 					dest: 'public'
@@ -128,7 +130,7 @@ module.exports = function(grunt) {
 				tasks: ['buildstyles']
 			},
 			js: {
-				files: ['public-src/js/**/*.js'],
+				files: ['public-src/js/**/*.js', 'public-src/js/**/*.frag', 'public-src/js/**/*.vertex'],
 				tasks: ['copy:development']
 			},
 			img: {
