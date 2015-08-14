@@ -5,7 +5,7 @@ varying vec2 uv;
 
 void main(){
     gl_FragColor = vec4(
-        (texture2D(pressure, uv)).x*0.8,
-        (texture2D(velocity, uv)*0.01).xy,
+        (texture2D(pressure, uv)).x*0.9,
+        (texture2D(velocity, uv)*0.001).xy,
     1.0);
 }

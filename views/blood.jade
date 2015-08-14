@@ -7,6 +7,12 @@ html
 		link(rel='canonical', href='http://www.29a.ch/sandbox/2012/webglfluid/')
 		link(rel='stylesheet', href='style/style.css')
 	body(style='height: 100%; width: 100%')
+		div(id="wrapper")
+			div(id="fileWrapper" class="file_wrapper")
+				div(id="info") HTML5 Audio API showcase | An Audio Viusalizer
+				label(for="uploadedFile") Drag&drop or select a file to play:
+				input(type="file" id="uploadedFile")
+
 		#cc
 			canvas#c(width='1280', height='720')
 		#video
