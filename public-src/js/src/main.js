@@ -8,7 +8,7 @@ var bloodPower = 10;
 var bloodWidth = 100;
 var bloodCursor = 120;
 var options = {
-        iterations: 20,
+        iterations: 25,
         mouse_force: 10,
         resolution: 1,
         cursor_size: 120,
@@ -172,10 +172,7 @@ Visualizer.prototype = {
             meterNum = 800 / (10 + 2), //count of the meters
             capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame
         //ctx = canvas.getContext('2d'),
-        // gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        // gradient.addColorStop(1, '#0f0');
-        // gradient.addColorStop(0.5, '#ff0');
-        // gradient.addColorStop(0, '#f00');
+
         var drawMeter = function() {
             analyser.fftSize = 2048;
             analyser.minDecibels = -80;
@@ -213,12 +210,12 @@ Visualizer.prototype = {
 
             var rect = canvas.getBoundingClientRect();
 
-            bloodWidth = (rect.width / 2) - 300 + 1.5 * kickValue + bassValue;
-            bloodHeight = (rect.height / 2) - 100 + midValue - highValue;
+            bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
+            bloodHeight = (rect.height / 2) - 150 + 1.5 * midValue - highValue;
             bloodPower = 5 + Math.exp((bassValue / 52));
             bloodCursor = bloodPower * 1.8 + 20;
             options.mouse_force = bloodPower;
-            //console.log(bloodPower);
+            console.log(array[2]);
             that.animationId = requestAnimationFrame(drawMeter);
         }
         this.animationId = requestAnimationFrame(drawMeter);
@@ -529,7 +526,7 @@ function setup(width, height, singleComponentFboFormat){
         advectVelocityKernel.uniforms.dt = options.step*1.0;
         advectVelocityKernel.run();
 
-        console.log(bloodCursor);
+        //console.log(bloodCursor);
         vec2.set([xd*px_x*bloodCursor*bloodPower,
                  -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
         vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
