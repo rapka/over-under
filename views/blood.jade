@@ -1,30 +1,41 @@
 doctype html
 html
 	head
-		title WebGL Fluid Dynamics based on Navier Stokes Equations
+		title BLOOD FRENZY
 		meta(name='description', content='A WebGL fluid simulation demo based on the navier stokes equations for incompressible flow.')
 		link(href='http://fonts.googleapis.com/css?family=Michroma', rel='stylesheet', type='text/css')
 		link(rel='canonical', href='http://www.29a.ch/sandbox/2012/webglfluid/')
 		link(rel='stylesheet', href='style/style.css')
 	body(style='height: 100%; width: 100%')
-		div(id="wrapper")
-			div(id="fileWrapper" class="file_wrapper")
-				div(id="info") HTML5 Audio API showcase | An Audio Viusalizer
-				label(for="uploadedFile") Drag&drop or select a file to play:
-				input(type="file" id="uploadedFile")
 
-		#cc
-			canvas#c(width='1280', height='720')
-		#video
-			p
-				| Your system does not support WebGL which is required for this demo. You can try to
-				a(href='http://get.webgl.org/') get WebGL
-				|	to work or try out the older, more simple,
-				a(href='http://29a.ch/sandbox/2012/fluidcanvas/') canvas version
-				|	of this demo.
+		.visualizer
+			div(id="wrapper")
+				div(id="fileWrapper" class="file_wrapper")
+					label(for="uploadedFile") Drag&drop or select a file to play:
+					input(type="file" id="uploadedFile")
+			#cc
+				canvas#c(width='1280', height='720')
+			#video
+				p
+					| Your system does not support WebGL which is required for this demo. You can try to
+					a(href='http://get.webgl.org/') get WebGL
+					|	to work or try out the older, more simple,
+					a(href='http://29a.ch/sandbox/2012/fluidcanvas/') canvas version
+					|	of this demo.
 
-			p
-		script(data-main='js/src/main', src='js/lib/require.js')
-		script(type='text/javascript', src='http://platform.twitter.com/widgets.js', async='', defer='')
-		script(type='text/javascript', src='https://apis.google.com/js/plusone.js', async='', defer='')
-		#fb-root
+				p
+			script(data-main='js/src/main', src='js/lib/require.js')
+			script(type='text/javascript', src='https://apis.google.com/js/plusone.js', async='', defer='')
+			#fb-root
+		.site-data
+			.label-title
+				div.label-logo BLOOD FRENZY
+				.release-info
+					p FRENZY001
+					p Myth
+					
+					
+
+					div.release-links
+						div Track1 / Track2
+						div#track1 Listen
