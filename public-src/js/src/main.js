@@ -51,29 +51,29 @@ Visualizer.prototype = {
 	},
 	_addEventListner: function() {
 		var that = this;
+		var tracks = ['check.mp3'];
 
-		var track1 = document.getElementById('track1');
-		track1.addEventListener("click", function() {
-			var request = new XMLHttpRequest();
-			request.open('GET', 'track/check.mp3', true);
-			request.responseType = 'arraybuffer';
-			
-			request.onload = function() {
-					var audioData = request.response;
+		for (var i = 0; i < tracks.length; i++) {
+			var track = document.getElementById('track' + (i + 1));
+			track.addEventListener("click", function() {
+				var request = new XMLHttpRequest();
+				request.open('GET', 'track/' + tracks[i - 1], true);
+				request.responseType = 'arraybuffer';
+				
+				request.onload = function() {
+						var audioData = request.response;
 
-			         that.audioContext.decodeAudioData(audioData, function(buffer) {
-			         	//source.buffer = buffer;
-                        that._visualize(that.audioContext, buffer)
-			         	//source.connect(that.audioContext.destination);
-			         	//source.loop = true;
-			         },
+						that.audioContext.decodeAudioData(audioData, function(buffer) {
+							that._visualize(that.audioContext, buffer)
+						},
 
-				function(e){"Error with decoding audio data" + e.err});
+					function(e){"Error with decoding audio data" + e.err});
 
-			}
+				}
 
-			request.send();
-		}, false);
+				request.send();
+			}, false);
+		}
 	},
 
 	_visualize: function(audioContext, buffer) {
@@ -105,7 +105,6 @@ Visualizer.prototype = {
 			that._audioEnd(that);
 		};
 		this.info = 'Playing ' + this.fileName;
-		document.getElementById('fileWrapper').style.opacity = 0.2;
 		this._drawSpectrum(analyser);
 	},
 	_drawSpectrum: function(analyser) {
