@@ -2,7 +2,7 @@
 var debug = require('debug')('grimelist');
 var app = require('../app');
 
-app.set('port', process.env.FRENZY_PORT || 666);
+app.set('port', process.env.FRENZY_PORT || 1337);
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
