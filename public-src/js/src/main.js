@@ -3,6 +3,9 @@ require('game-shim');
 // only when optimized
 
 var audioBufferSouceNode;
+var currentTrack = 0;
+var offset = 0;
+var startTime = 0;
 
 var playing = false;
 var bloodHeight = 100;
@@ -55,28 +58,40 @@ Visualizer.prototype = {
 		for (var i = 0; i < tracks.length; i++) {
 			var track = document.getElementById('track' + (i + 1));
 			track.addEventListener("click", function() {
-
-				if (!playing) {
+				var loaded = false;
+				if (!playing && currentTrack != i) {
 					var request = new XMLHttpRequest();
 					request.open('GET', 'track/' + tracks[i - 1], true);
 					request.responseType = 'arraybuffer';
+					track.innerHTML = '...';
 					
 					request.onload = function() {
 							var audioData = request.response;
 
 							that.audioContext.decodeAudioData(audioData, function(buffer) {
-								that._visualize(that.audioContext, buffer)
-							},
-
-						function(e){"Error with decoding audio data" + e.err});
+								currentTrack = i;
+								playing = true;
+								offset = 0;
+								startTime = Date.now();
+								that._visualize(that.audioContext, buffer, offset);
+								track.innerHTML = 'Pause';
+							}, function(e){"Error with decoding audio data" + e.err});
 					}
 
 					request.send();
-					playing = true;
+					
+				}
+				else if (playing){
+					audioBufferSouceNode.stop();
+					offset = Date.now() - startTime;
+					track.innerHTML = 'Listen';
+					playing = false;
 				}
 				else {
-					audioBufferSouceNode.stop();
-					playing = false;
+					startTime = Date.now() - offset;
+					track.innerHTML = 'Pause';
+					that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration);
+					playing = true;
 				}
 
 				
@@ -84,7 +99,7 @@ Visualizer.prototype = {
 		}
 	},
 
-	_visualize: function(audioContext, buffer) {
+	_visualize: function(audioContext, buffer, offset) {
 			audioBufferSouceNode = audioContext.createBufferSource(),
 			analyser = audioContext.createAnalyser(),
 			that = this;
@@ -111,7 +126,7 @@ Visualizer.prototype = {
 		if (this.source !== null) {
 			this.source.stop(0);
 		}
-		audioBufferSouceNode.start(0);
+		audioBufferSouceNode.start(0, offset);
 		this.status = 1;
 		this.source = audioBufferSouceNode;
 		audioBufferSouceNode.onended = function() {
