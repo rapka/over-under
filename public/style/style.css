@@ -84,3 +84,16 @@ body {
   font-size: 300%;
   text-align: center;
 }
+.site-data .label-title .release-info .release-links .listen-button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  width: 200px;
+  margin: auto;
+}
+.site-data .label-title .release-info .release-links .listen-button:hover {
+  cursor: pointer;
+  color: #DDDDDD;
+}

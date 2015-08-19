@@ -1,6 +1,5 @@
 define(function(require, exports, module){
 require('game-shim');
-require('dat.gui');
 // only when optimized
 
 var playing = false;
@@ -23,8 +22,6 @@ window.onload = function() {
 };
 
 var Visualizer = function() {
-	this.file = null, //the current file
-	this.fileName = null, //the current file name
 	this.audioContext = null,
 	this.source = null, //the audio source
 	this.infoUpdateId = null, //to sotore the setTimeout ID and clear the interval
@@ -104,7 +101,6 @@ Visualizer.prototype = {
 		audioBufferSouceNode.onended = function() {
 			that._audioEnd(that);
 		};
-		this.info = 'Playing ' + this.fileName;
 		this._drawSpectrum(analyser);
 	},
 	_drawSpectrum: function(analyser) {
@@ -173,11 +169,7 @@ Visualizer.prototype = {
 			return;
 		};
 		this.status = 0;
-		var text = 'HTML5 Audio API showcase | An Audio Viusalizer';
-		document.getElementById('fileWrapper').style.opacity = 1;
-		document.getElementById('info').innerHTML = text;
-		instance.info = text;
-		document.getElementById('uploadedFile').value = '';
+	
 	}
 
 }
@@ -206,7 +198,6 @@ var canvas = document.getElementById('c'),
 			texture_float: true
 		}
 	}, fail),
-	gui = new dat.GUI(),
 	clock = new Clock(canvas),
 	input = new InputHandler(canvas),
 	loader = new Loader(),
@@ -240,7 +231,6 @@ function init(){
 		//}
 	}, 250));
 
-	gui.close();
 	onresize();
 	clock.start();
 }
