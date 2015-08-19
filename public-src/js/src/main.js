@@ -2,6 +2,8 @@ define(function(require, exports, module){
 require('game-shim');
 // only when optimized
 
+var audioBufferSouceNode;
+
 var playing = false;
 var bloodHeight = 100;
 var bloodPower = 10;
@@ -53,28 +55,37 @@ Visualizer.prototype = {
 		for (var i = 0; i < tracks.length; i++) {
 			var track = document.getElementById('track' + (i + 1));
 			track.addEventListener("click", function() {
-				var request = new XMLHttpRequest();
-				request.open('GET', 'track/' + tracks[i - 1], true);
-				request.responseType = 'arraybuffer';
-				
-				request.onload = function() {
-						var audioData = request.response;
 
-						that.audioContext.decodeAudioData(audioData, function(buffer) {
-							that._visualize(that.audioContext, buffer)
-						},
+				if (!playing) {
+					var request = new XMLHttpRequest();
+					request.open('GET', 'track/' + tracks[i - 1], true);
+					request.responseType = 'arraybuffer';
+					
+					request.onload = function() {
+							var audioData = request.response;
 
-					function(e){"Error with decoding audio data" + e.err});
+							that.audioContext.decodeAudioData(audioData, function(buffer) {
+								that._visualize(that.audioContext, buffer)
+							},
 
+						function(e){"Error with decoding audio data" + e.err});
+					}
+
+					request.send();
+					playing = true;
+				}
+				else {
+					audioBufferSouceNode.stop();
+					playing = false;
 				}
 
-				request.send();
+				
 			}, false);
 		}
 	},
 
 	_visualize: function(audioContext, buffer) {
-		var audioBufferSouceNode = audioContext.createBufferSource(),
+			audioBufferSouceNode = audioContext.createBufferSource(),
 			analyser = audioContext.createAnalyser(),
 			that = this;
 		//connect the source to the analyser
@@ -82,6 +93,11 @@ Visualizer.prototype = {
 		//connect the analyser to the destination(the speaker), or we won't hear the sound
 		analyser.connect(audioContext.destination);
 		//then assign the buffer to the buffer source node
+		if (buffer == null) {
+			audioBufferSouceNode.stop();
+			return;
+		}
+
 		audioBufferSouceNode.buffer = buffer;
 		//play the source
 		if (!audioBufferSouceNode.start) {
