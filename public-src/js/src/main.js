@@ -13,17 +13,19 @@ var bloodPower = 10;
 var bloodWidth = 100;
 var bloodCursor = 120;
 var options = {
-		iterations: 22,
-		mouse_force: 10,
-		resolution: 1,
-		cursor_size: 120,
-		step: 1/120
-	};
+	iterations: 22,
+	mouse_force: 10,
+	resolution: 1,
+	cursor_size: 120,
+	step: 1/120
+};
 
 window.onload = function() {
 	new Visualizer().ini();
 	var player = document.getElementById("player");
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
+
+
 };
 
 var Visualizer = function() {
@@ -53,7 +55,7 @@ Visualizer.prototype = {
 	},
 	_addEventListner: function() {
 		var that = this;
-		var tracks = ['check.mp3'];
+		var tracks = ['gaze.mp3'];
 
 		for (var i = 0; i < tracks.length; i++) {
 			var track = document.getElementById('track' + (i + 1));
@@ -73,7 +75,7 @@ Visualizer.prototype = {
 								playing = true;
 								offset = 0;
 								startTime = Date.now();
-								that._visualize(that.audioContext, buffer, offset);
+								that._visualize(that.audioContext, buffer, offset, track);
 								track.innerHTML = 'Pause';
 							}, function(e){"Error with decoding audio data" + e.err});
 					}
@@ -87,10 +89,18 @@ Visualizer.prototype = {
 					track.innerHTML = 'Listen';
 					playing = false;
 				}
+				else if (!playing && offset == 0) {
+					console.log(startTime);
+					track.innerHTML = 'Pause';
+					offset = 0;
+					startTime = Date.now();
+					that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, track);
+					playing = true;
+				}
 				else {
 					startTime = Date.now() - offset;
 					track.innerHTML = 'Pause';
-					that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration);
+					that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, track);
 					playing = true;
 				}
 
@@ -99,7 +109,7 @@ Visualizer.prototype = {
 		}
 	},
 
-	_visualize: function(audioContext, buffer, offset) {
+	_visualize: function(audioContext, buffer, offset, track) {
 			audioBufferSouceNode = audioContext.createBufferSource(),
 			analyser = audioContext.createAnalyser(),
 			that = this;
@@ -130,7 +140,11 @@ Visualizer.prototype = {
 		this.status = 1;
 		this.source = audioBufferSouceNode;
 		audioBufferSouceNode.onended = function() {
-			that._audioEnd(that);
+			console.log('ended');
+			offset = 0;
+			startTime = 0;
+			playing = false;
+			track.innerHTML = 'Listen';
 		};
 		this._drawSpectrum(analyser);
 	},

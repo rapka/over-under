@@ -64,7 +64,7 @@ fs.readdirSync(routesPath).forEach(function (file) {
 
 // Render 404 page
 app.use(function(req, res, next) {
-  res.status(404).render('404.jade', {title: 'Not Found'});
+  res.status(404).render('blood.jade');
   next();
 });
 
