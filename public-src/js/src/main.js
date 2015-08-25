@@ -109,7 +109,7 @@ Visualizer.prototype = {
 			}
 			else if (!playing && offset == 0) {
 				console.log(startTime);
-				track.innerHTML = 'Pause';
+				listenButton.innerHTML = 'Pause';
 				offset = 0;
 				startTime = Date.now();
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
