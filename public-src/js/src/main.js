@@ -6,6 +6,7 @@ var audioBufferSouceNode;
 var currentTrack = 0;
 var offset = 0;
 var startTime = 0;
+var activeRelease = 1;
 
 var playing = false;
 var bloodHeight = 100;
@@ -20,12 +21,32 @@ var options = {
 	step: 1/120
 };
 
+var releases = {
+	1: {
+		number: 'FRENZY001',
+		artist: 'Myth',
+		title: 'Track1 / Track2',
+		date: '10/10/20XX',
+		mp3: 'gaze.mp3',
+		boomkat: 'http://www.boomkat.com',
+		bleep: 'http://www.bleep.com',
+		juno: 'http://www.junodownload.com',
+		bandcamp: 'http://www.bandcamp.com'
+	}
+}
+
 window.onload = function() {
 	new Visualizer().ini();
 	var player = document.getElementById("player");
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
-
-
+	$('#release-number').text(releases[activeRelease].number);
+	$('#release-artist').text(releases[activeRelease].artist);
+	$('#release-title').text(releases[activeRelease].title);
+	$('#release-date').text(releases[activeRelease].date);
+	$('#bandcamp').attr('href', releases[activeRelease].bandcamp);
+	$('#juno').attr('href', releases[activeRelease].juno);
+	$('#boomkat').attr('href', releases[activeRelease].boomkat);
+	$('#bleep').attr('href', releases[activeRelease].bleep);
 };
 
 var Visualizer = function() {
@@ -57,56 +78,52 @@ Visualizer.prototype = {
 		var that = this;
 		var tracks = ['gaze.mp3'];
 
-		for (var i = 0; i < tracks.length; i++) {
-			var track = document.getElementById('track' + (i + 1));
-			track.addEventListener("click", function() {
-				var loaded = false;
-				if (!playing && currentTrack != i) {
-					var request = new XMLHttpRequest();
-					request.open('GET', 'track/' + tracks[i - 1], true);
-					request.responseType = 'arraybuffer';
-					track.innerHTML = '...';
-					
-					request.onload = function() {
-							var audioData = request.response;
-
-							that.audioContext.decodeAudioData(audioData, function(buffer) {
-								currentTrack = i;
-								playing = true;
-								offset = 0;
-								startTime = Date.now();
-								that._visualize(that.audioContext, buffer, offset, track);
-								track.innerHTML = 'Pause';
-							}, function(e){"Error with decoding audio data" + e.err});
-					}
-
-					request.send();
-					
-				}
-				else if (playing){
-					audioBufferSouceNode.stop();
-					offset = Date.now() - startTime;
-					track.innerHTML = 'Listen';
-					playing = false;
-				}
-				else if (!playing && offset == 0) {
-					console.log(startTime);
-					track.innerHTML = 'Pause';
-					offset = 0;
-					startTime = Date.now();
-					that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, track);
-					playing = true;
-				}
-				else {
-					startTime = Date.now() - offset;
-					track.innerHTML = 'Pause';
-					that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, track);
-					playing = true;
-				}
-
+		var listenButton = document.getElementById('listen-button');
+		listenButton.addEventListener("click", function() {
+			var loaded = false;
+			if (!playing && currentTrack != activeRelease) {
+				var request = new XMLHttpRequest();
+				request.open('GET', 'track/' + releases[activeRelease].mp3, true);
+				request.responseType = 'arraybuffer';
+				listenButton.innerHTML = '...';
 				
-			}, false);
-		}
+				request.onload = function() {
+						var audioData = request.response;
+						that.audioContext.decodeAudioData(audioData, function(buffer) {
+							currentTrack = activeRelease;
+							playing = true;
+							offset = 0;
+							startTime = Date.now();
+							that._visualize(that.audioContext, buffer, offset, listenButton);
+							listenButton.innerHTML = 'Pause';
+						}, function(e){"Error with decoding audio data" + e.err});
+				}
+				request.send();
+				
+			}
+			else if (playing){
+				audioBufferSouceNode.stop();
+				offset = Date.now() - startTime;
+				listenButton.innerHTML = 'Listen';
+				playing = false;
+			}
+			else if (!playing && offset == 0) {
+				console.log(startTime);
+				track.innerHTML = 'Pause';
+				offset = 0;
+				startTime = Date.now();
+				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
+				playing = true;
+			}
+			else {
+				startTime = Date.now() - offset;
+				listenButton.innerHTML = 'Pause';
+				that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, listenButton);
+				playing = true;
+			}
+			
+		}, false);
+	
 	},
 
 	_visualize: function(audioContext, buffer, offset, track) {
