@@ -14,6 +14,7 @@ var currentTrack = 0;
 var offset = 0;
 var startTime = 0;
 var activeRelease = 1;
+var paused = false;
 
 var playing = false;
 var bloodHeight = 100;
@@ -102,6 +103,7 @@ Visualizer.prototype = {
 							playing = true;
 							offset = 0;
 							startTime = Date.now();
+							paused = false;
 							that._visualize(that.audioContext, buffer, offset, listenButton);
 							listenButton.innerHTML = 'Pause';
 						}, function(e){"Error with decoding audio data" + e.err});
@@ -112,8 +114,9 @@ Visualizer.prototype = {
 			else if (playing){
 				audioBufferSouceNode.stop();
 				offset = Date.now() - startTime;
+				paused = true;
 				listenButton.innerHTML = 'Listen';
-				playing = false;
+				playing = true;
 			}
 			else if (!playing && offset == 0) {
 				console.log(startTime);
@@ -121,12 +124,14 @@ Visualizer.prototype = {
 				offset = 0;
 				startTime = Date.now();
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
+				paused = false;
 				playing = true;
 			}
 			else {
 				startTime = Date.now() - offset;
 				listenButton.innerHTML = 'Pause';
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, listenButton);
+				paused = false;
 				playing = true;
 			}
 			
@@ -165,11 +170,14 @@ Visualizer.prototype = {
 		this.status = 1;
 		this.source = audioBufferSouceNode;
 		audioBufferSouceNode.onended = function() {
-			console.log('ended');
 			offset = 0;
-			currentTrack = 0;
+			if (!paused) {
+				currentTrack = 0;
+			}
+
 			startTime = 0;
 			playing = false;
+
 			track.innerHTML = 'Listen';
 		};
 		this._drawSpectrum(analyser);
