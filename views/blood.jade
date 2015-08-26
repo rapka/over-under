@@ -23,8 +23,6 @@ html
 
 				p
 			script(data-main='js/src/main', src='js/lib/require.js')
-			script(type='text/javascript', src='https://apis.google.com/js/plusone.js', async='', defer='')
-			#fb-root
 		.site-data
 			.label-title
 				div.label-logo BLOOD FRENZY
@@ -50,5 +48,5 @@ html
 				div.about about
 				div.contact contact
 			.controls
-				div.hide [hide site]
-				div.stop [disable visualization]
+				div.stop#stop [disable visualization]
+				div.hide#hide [hide site]

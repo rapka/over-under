@@ -44,6 +44,12 @@ var releases = {
 }
 
 window.onload = function() {
+
+	if (!desktop) {
+		$('#stop').hide();
+		$('#hide').hide();
+	}
+
 	new Visualizer().ini();
 	var player = document.getElementById("player");
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
@@ -55,6 +61,25 @@ window.onload = function() {
 	$('#juno').attr('href', releases[activeRelease].juno);
 	$('#boomkat').attr('href', releases[activeRelease].boomkat);
 	$('#bleep').attr('href', releases[activeRelease].bleep);
+	$('#stop').click(function () {
+		renderBlood = !renderBlood;
+
+		if (gl) {
+			gl.clearColor(0.0, 0.0, 0.0, 1.0);
+			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		}
+
+		if(renderBlood) {
+			$('#stop').text('[disable visualization]');
+		} else {
+			$('#stop').text('[enable visualization]');
+		}
+
+	});
+
+	$('#hide').click(function () {
+		$('.label-title, .site-info, .stop').toggleClass('hidden');
+	});
 };
 
 var Visualizer = function() {
@@ -515,6 +540,10 @@ function setup(width, height, singleComponentFboFormat){
 		y0 = bloodHeight;
 
 	clock.ontick = function(dt){
+
+		if (!renderBlood) {
+			return;
+		}
 		var x1 = bloodWidth * options.resolution,
 			y1 = bloodHeight * options.resolution,
 			xd = x1-x0,

@@ -77,9 +77,20 @@ html, body {
 	}
 }
 
+.stop {
+	opacity: 1;
+	transition: opacity 1s linear;
+
+	&.hidden {
+		opacity: 0;
+	}
+
+}
+
 .site-data {
 	//position: absolute;
 	height: 100%;
+
 	.site-info, .controls {
 		position: fixed;
 		bottom: 5px;
@@ -90,6 +101,13 @@ html, body {
 
 	.site-info {
 		left: 10px;
+		opacity: 1;
+		transition: opacity 1s linear;
+
+		&.hidden {
+			opacity: 0;
+		}
+
 		.about, .contact {
 			padding-right: 20px;
 			display: inline;
@@ -107,16 +125,28 @@ html, body {
 		.hide, .stop {
 			padding-left: 20px;
 			display: inline;
-			transition: color 0.2s ease;
+			opacity: 1;
+			transition: color 0.2s ease, opacity 1s linear;
 
 			&:hover {
 				cursor: pointer;
 				color: @highlightColor;
 			}
+
+			&.hidden {
+				opacity: 0;
+			}
 		}
 	}
 	
 	.label-title {
+		opacity: 1;
+		transition: opacity 1s linear;
+
+		&.hidden {
+			opacity: 0;
+		}
+
 
 		.label-logo {
 			font-size: 400%;

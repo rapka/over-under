@@ -67,6 +67,14 @@ body {
 .visualizer a {
   color: #f00;
 }
+.stop {
+  opacity: 1;
+  -webkit-transition: opacity 1s linear;
+          transition: opacity 1s linear;
+}
+.stop.hidden {
+  opacity: 0;
+}
 .site-data {
   height: 100%;
 }
@@ -79,6 +87,12 @@ body {
 }
 .site-data .site-info {
   left: 10px;
+  opacity: 1;
+  -webkit-transition: opacity 1s linear;
+          transition: opacity 1s linear;
+}
+.site-data .site-info.hidden {
+  opacity: 0;
 }
 .site-data .site-info .about,
 .site-data .site-info .contact {
@@ -99,21 +113,32 @@ body {
 .site-data .controls .stop {
   padding-left: 20px;
   display: inline;
-  -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
+  opacity: 1;
+  -webkit-transition: color 0.2s ease, opacity 1s linear;
+          transition: color 0.2s ease, opacity 1s linear;
 }
 .site-data .controls .hide:hover,
 .site-data .controls .stop:hover {
   cursor: pointer;
   color: #999999;
 }
+.site-data .controls .hide.hidden,
+.site-data .controls .stop.hidden {
+  opacity: 0;
+}
 .site-data .label-title {
+  opacity: 1;
+  -webkit-transition: opacity 1s linear;
+          transition: opacity 1s linear;
   position: relative;
   z-index: 10;
   top: 200px;
   margin: auto;
   width: 800px;
   text-align: center;
+}
+.site-data .label-title.hidden {
+  opacity: 0;
 }
 .site-data .label-title .label-logo {
   font-size: 400%;
