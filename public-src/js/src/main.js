@@ -2,6 +2,13 @@ define(function(require, exports, module){
 require('game-shim');
 // only when optimized
 
+var desktop = true;
+var renderBlood = true;
+
+if (window.innerWidth <= 480) {
+	desktop = false;
+}
+
 var audioBufferSouceNode;
 var currentTrack = 0;
 var offset = 0;
@@ -27,7 +34,7 @@ var releases = {
 		artist: 'Myth',
 		title: 'Track1 / Track2',
 		date: '10/10/20XX',
-		mp3: 'gaze.mp3',
+		mp3: 'moet.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
 		juno: 'http://www.junodownload.com',
@@ -58,6 +65,7 @@ var Visualizer = function() {
 	this.forceStop = false,
 	this.allCapsReachBottom = false
 };
+
 Visualizer.prototype = {
 	ini: function() {
 		this._prepareAPI();
@@ -127,9 +135,9 @@ Visualizer.prototype = {
 	},
 
 	_visualize: function(audioContext, buffer, offset, track) {
-			audioBufferSouceNode = audioContext.createBufferSource(),
-			analyser = audioContext.createAnalyser(),
-			that = this;
+		audioBufferSouceNode = audioContext.createBufferSource(),
+		analyser = audioContext.createAnalyser(),
+		that = this;
 		//connect the source to the analyser
 		audioBufferSouceNode.connect(analyser);
 		//connect the analyser to the destination(the speaker), or we won't hear the sound
@@ -159,6 +167,7 @@ Visualizer.prototype = {
 		audioBufferSouceNode.onended = function() {
 			console.log('ended');
 			offset = 0;
+			currentTrack = 0;
 			startTime = 0;
 			playing = false;
 			track.innerHTML = 'Listen';
@@ -231,7 +240,6 @@ Visualizer.prototype = {
 			return;
 		};
 		this.status = 0;
-	
 	}
 
 }
@@ -298,6 +306,12 @@ function init(){
 }
 
 function setup(width, height, singleComponentFboFormat){
+
+	if (!desktop) {
+		console.log('no setop!');
+		return;
+	}
+	console.log('setup on desktop!');
 	canvas.width = width,
 	canvas.height = height;
 
