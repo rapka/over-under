@@ -53,6 +53,7 @@ module.exports = function(grunt) {
 
 		clean: {
 			all: [
+			'public/*',
 			'public/style',
 			'public/js',
 			'public/img/*.png',
