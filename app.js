@@ -2,16 +2,10 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 var fs = require('fs');
-var id3_reader = require('id3_reader');
 var probe = require('node-ffprobe');
-var md5 = require('MD5');
-var multer = require('multer');
-var expressSession = require('express-session');
-var FileStore = require('session-file-store')(expressSession);
 
 var app = express();
 

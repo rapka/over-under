@@ -69,8 +69,7 @@ body {
 }
 .stop {
   opacity: 1;
-  -webkit-transition: opacity 1s linear;
-          transition: opacity 1s linear;
+  transition: opacity 1s linear;
 }
 .stop.hidden {
   opacity: 0;
@@ -110,8 +109,7 @@ body {
   padding-left: 20px;
   display: inline;
   opacity: 1;
-  -webkit-transition: color 0.2s ease, opacity 1s linear;
-          transition: color 0.2s ease, opacity 1s linear;
+  transition: color 0.2s ease, opacity 1s linear;
 }
 .site-data .controls .hide:hover,
 .site-data .controls .stop:hover {
@@ -124,8 +122,7 @@ body {
 }
 .site-data .releases-section {
   opacity: 1;
-  -webkit-transition: opacity 1s linear;
-          transition: opacity 1s linear;
+  transition: opacity 1s linear;
   position: relative;
   z-index: 10;
   margin: auto;
@@ -145,7 +142,6 @@ body {
   margin: auto;
   color: #FFFFFF;
   text-decoration: none;
-  -webkit-transition: all 0.5s;
   transition: all 0.5s;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -176,8 +172,7 @@ body {
   text-align: center;
   width: 200px;
   margin: auto;
-  -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 .site-data .releases-section .release-info .release-links #buy-button:hover {
   cursor: pointer;
@@ -193,8 +188,7 @@ body {
 }
 .site-info {
   opacity: 1;
-  -webkit-transition: opacity 1s linear;
-          transition: opacity 1s linear;
+  transition: opacity 1s linear;
 }
 .site-info.hidden {
   opacity: 0;
@@ -203,8 +197,7 @@ body {
   left: 10px;
   padding-left: 20px;
   display: inline;
-  -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
+  transition: color 0.2s ease;
 }
 .site-info .info-link.selected {
   color: #FF0000;
@@ -235,8 +228,7 @@ body {
 }
 .about-section .bleeding,
 .contact-section .bleeding {
-  -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
+  transition: color 0.2s ease;
   color: white;
   text-decoration: none;
   text-shadow: 0px 4px 1px #300000,
