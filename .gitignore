@@ -32,6 +32,7 @@ data
 #public css files
 public
 public/style
+public/style/*.css
 public-src/*.css
 
 #upload folder
