@@ -35,7 +35,7 @@ var releases = {
 		artist: 'Myth',
 		title: 'Track1 / Track2',
 		date: '10/10/20XX',
-		mp3: 'moet.mp3',
+		mp3: 'futa.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
 		juno: 'http://www.junodownload.com',
