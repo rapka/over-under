@@ -53,6 +53,7 @@ html, body {
 		width: 100% !important;
 		height: 100% !important;
 	}
+
 	canvas:-moz-full-screen {
 		width: 100% !important;
 		height: 100% !important;
@@ -87,37 +88,35 @@ html, body {
 
 }
 
+.site-section {
+	display: none;
+
+	&.selected {
+		position: relative;
+		display: block;
+	}
+}
+
 .site-data {
 	//position: absolute;
 	height: 100%;
+
+	.label-logo {
+		padding-top: 100px;
+		z-index: 10;
+		width: 600px;
+		text-align: center;
+		position: relative;
+		margin: auto;
+		color: white;
+		font-size: 400%;
+	}	
 
 	.site-info, .controls {
 		position: fixed;
 		bottom: 5px;
 		letter-spacing: 2px;
 		font-size: 18px;
-
-	}
-
-	.site-info {
-		left: 10px;
-		opacity: 1;
-		transition: opacity 1s linear;
-
-		&.hidden {
-			opacity: 0;
-		}
-
-		.about, .contact {
-			padding-right: 20px;
-			display: inline;
-			transition: color 0.2s ease;
-
-			&:hover {
-				cursor: pointer;
-				color: @highlightColor;
-			}
-		}
 	}
 
 	.controls {
@@ -139,7 +138,7 @@ html, body {
 		}
 	}
 	
-	.label-title {
+	.releases-section {
 		opacity: 1;
 		transition: opacity 1s linear;
 
@@ -147,14 +146,8 @@ html, body {
 			opacity: 0;
 		}
 
-
-		.label-logo {
-			font-size: 400%;
-		}
-
 		position: relative;
 		z-index: 10;
-		top: 200px;
 		margin: auto;
 		width: 800px;
 		text-align: center;
@@ -169,7 +162,7 @@ html, body {
 					width: 180px;
 					text-align: center;
 					margin: auto;
-					color:#fff;
+					color: #FFFFFF;
 					text-decoration:none; 
 					-webkit-transition: all 0.5s;
 					-moz-transition: all 0.5s;
@@ -238,5 +231,77 @@ html, body {
 			}
 		}
 	}
+}
 
+.site-info {
+	opacity: 1;
+	transition: opacity 1s linear;
+
+	&.hidden {
+		opacity: 0;
+	}
+}
+
+.site-info .info-link {
+	left: 10px;
+
+	&.selected {
+		
+		color: #FF0000;
+		text-shadow:
+			0px 4px 1px #300000,
+			0px 6px 1px #400000,
+			0px 8px 1px #500000,
+			0px 10px 1px #600000,
+			0px 12px 1px #700000,
+			0px 14px 1px #800000,
+			0px 16px 1px #900000,
+			0px 18px 1px #A00000,
+			0px 20px 1px #B00000,
+			0px 22px 1px #C00000,
+			0px 24px 1px #D00000,
+			0px 26px 1px #E00000,
+			0px 28px 1px #F00000;
+	}
+
+	padding-left: 20px;
+	display: inline;
+	transition: color 0.2s ease;
+
+	&:hover {
+		cursor: pointer;
+		color: #E22635;
+	}
+}
+
+.about-section, .contact-section {
+	padding-top: 20px;
+	text-align: center;
+	letter-spacing: 5px;
+	font-size: 20px;
+
+	 .bleeding {
+	 	transition: color 0.2s ease;
+	 	color: white;
+	 	text-decoration: none;
+		text-shadow:
+			0px 4px 1px #300000,
+			0px 6px 1px #400000,
+			0px 8px 1px #500000,
+			0px 10px 1px #600000,
+			0px 12px 1px #700000,
+			0px 14px 2px #800000,
+			0px 16px 2px #900000,
+			0px 18px 3px #A00000,
+			0px 20px 3px #B00000,
+			0px 22px 4px #C00000,
+			0px 24px 4px #D00000,
+			0px 26px 5px #E00000,
+			0px 28px 5px #F00000;
+			
+			&:hover {
+			cursor: pointer;
+			color: #E22635;
+		}
+	}
 }

@@ -53,6 +53,15 @@ window.onload = function() {
 	new Visualizer().ini();
 	var player = document.getElementById("player");
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
+
+	$('.info-link').click(function () {
+		console.log($(this)[0].id);
+		$('.info-link').removeClass('selected');
+		$('.site-section').removeClass('selected');
+		$('.' + $(this)[0].id + '-section').toggleClass('selected');
+		$(this).toggleClass('selected');
+	});
+
 	$('#release-number').text(releases[activeRelease].number);
 	$('#release-artist').text(releases[activeRelease].artist);
 	$('#release-title').text(releases[activeRelease].title);
@@ -78,7 +87,12 @@ window.onload = function() {
 	});
 
 	$('#hide').click(function () {
-		$('.label-title, .site-info, .stop').toggleClass('hidden');
+		if ($('#hide').text() === '[show site]') {
+			$('#hide').text('[hide site]');
+		} else {
+			$('#hide').text('[show site]');
+		}
+		$('.label-title, .label-logo, .site-section, .site-info, .stop').toggleClass('hidden');
 	});
 };
 
@@ -219,8 +233,12 @@ Visualizer.prototype = {
 			meterNum = 800 / (10 + 2), //count of the meters
 			capYPositionArray = []; ////store the vertical position of hte caps for the preivous frame
 		//ctx = canvas.getContext('2d'),
-
+		if (!renderBlood) {
+			return;
+		}
 		var drawMeter = function() {
+
+
 			analyser.fftSize = 2048;
 			analyser.minDecibels = -80;
 			analyser.maxDecibels = -10;
@@ -241,6 +259,7 @@ Visualizer.prototype = {
 				};
 			};
 
+
 			var bassValue = (array[0] + array[1] + array[2] + array[3]) / 4;
 			var kickValue = (array[3] + array[4] + array[5] +array[6] + array[7] ) / 5;
 			var midSum = 0;
@@ -258,7 +277,7 @@ Visualizer.prototype = {
 			var rect = canvas.getBoundingClientRect();
 
 			bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
-			bloodHeight = (rect.height / 2) - 150 + 1.3 * midValue - highValue;
+			bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
 			bloodPower = 5 + Math.exp((bassValue / 52));
 			bloodCursor = bloodPower * 1.8 + 20;
 			options.mouse_force = bloodPower;

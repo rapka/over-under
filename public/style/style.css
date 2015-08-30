@@ -75,8 +75,25 @@ body {
 .stop.hidden {
   opacity: 0;
 }
+.site-section {
+  display: none;
+}
+.site-section.selected {
+  position: relative;
+  display: block;
+}
 .site-data {
   height: 100%;
+}
+.site-data .label-logo {
+  padding-top: 100px;
+  z-index: 10;
+  width: 600px;
+  text-align: center;
+  position: relative;
+  margin: auto;
+  color: white;
+  font-size: 400%;
 }
 .site-data .site-info,
 .site-data .controls {
@@ -84,27 +101,6 @@ body {
   bottom: 5px;
   letter-spacing: 2px;
   font-size: 18px;
-}
-.site-data .site-info {
-  left: 10px;
-  opacity: 1;
-  -webkit-transition: opacity 1s linear;
-          transition: opacity 1s linear;
-}
-.site-data .site-info.hidden {
-  opacity: 0;
-}
-.site-data .site-info .about,
-.site-data .site-info .contact {
-  padding-right: 20px;
-  display: inline;
-  -webkit-transition: color 0.2s ease;
-          transition: color 0.2s ease;
-}
-.site-data .site-info .about:hover,
-.site-data .site-info .contact:hover {
-  cursor: pointer;
-  color: #999999;
 }
 .site-data .controls {
   right: 10px;
@@ -126,32 +122,28 @@ body {
 .site-data .controls .stop.hidden {
   opacity: 0;
 }
-.site-data .label-title {
+.site-data .releases-section {
   opacity: 1;
   -webkit-transition: opacity 1s linear;
           transition: opacity 1s linear;
   position: relative;
   z-index: 10;
-  top: 200px;
   margin: auto;
   width: 800px;
   text-align: center;
 }
-.site-data .label-title.hidden {
+.site-data .releases-section.hidden {
   opacity: 0;
 }
-.site-data .label-title .label-logo {
-  font-size: 400%;
-}
-.site-data .label-title .release-info {
+.site-data .releases-section .release-info {
   font-size: 300%;
   text-align: center;
 }
-.site-data .label-title .release-info .release-links #listen-button {
+.site-data .releases-section .release-info .release-links #listen-button {
   width: 180px;
   text-align: center;
   margin: auto;
-  color: #fff;
+  color: #FFFFFF;
   text-decoration: none;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
@@ -172,11 +164,11 @@ body {
 					0px 26px 1px #E00000,
 					0px 28px 1px #F00000;
 }
-.site-data .label-title .release-info .release-links #listen-button:hover {
+.site-data .releases-section .release-info .release-links #listen-button:hover {
   cursor: pointer;
   color: #DB4D4D;
 }
-.site-data .label-title .release-info .release-links #buy-button {
+.site-data .releases-section .release-info .release-links #buy-button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -187,15 +179,82 @@ body {
   -webkit-transition: color 0.2s ease;
           transition: color 0.2s ease;
 }
-.site-data .label-title .release-info .release-links #buy-button:hover {
+.site-data .releases-section .release-info .release-links #buy-button:hover {
   cursor: pointer;
   color: #999999;
 }
-.site-data .label-title .release-info .release-links .buy-links .buy-link {
+.site-data .releases-section .release-info .release-links .buy-links .buy-link {
   display: inline;
   padding: 0 10px;
   letter-spacing: 5px;
 }
-.site-data .label-title .release-info .release-links .buy-links .buy-link a {
+.site-data .releases-section .release-info .release-links .buy-links .buy-link a {
   text-decoration: none;
+}
+.site-info {
+  opacity: 1;
+  -webkit-transition: opacity 1s linear;
+          transition: opacity 1s linear;
+}
+.site-info.hidden {
+  opacity: 0;
+}
+.site-info .info-link {
+  left: 10px;
+  padding-left: 20px;
+  display: inline;
+  -webkit-transition: color 0.2s ease;
+          transition: color 0.2s ease;
+}
+.site-info .info-link.selected {
+  color: #FF0000;
+  text-shadow: 0px 4px 1px #300000,
+			0px 6px 1px #400000,
+			0px 8px 1px #500000,
+			0px 10px 1px #600000,
+			0px 12px 1px #700000,
+			0px 14px 1px #800000,
+			0px 16px 1px #900000,
+			0px 18px 1px #A00000,
+			0px 20px 1px #B00000,
+			0px 22px 1px #C00000,
+			0px 24px 1px #D00000,
+			0px 26px 1px #E00000,
+			0px 28px 1px #F00000;
+}
+.site-info .info-link:hover {
+  cursor: pointer;
+  color: #E22635;
+}
+.about-section,
+.contact-section {
+  padding-top: 20px;
+  text-align: center;
+  letter-spacing: 5px;
+  font-size: 20px;
+}
+.about-section .bleeding,
+.contact-section .bleeding {
+  -webkit-transition: color 0.2s ease;
+          transition: color 0.2s ease;
+  color: white;
+  text-decoration: none;
+  text-shadow: 0px 4px 1px #300000,
+			0px 6px 1px #400000,
+			0px 8px 1px #500000,
+			0px 10px 1px #600000,
+			0px 12px 1px #700000,
+			0px 14px 2px #800000,
+			0px 16px 2px #900000,
+			0px 18px 3px #A00000,
+			0px 20px 3px #B00000,
+			0px 22px 4px #C00000,
+			0px 24px 4px #D00000,
+			0px 26px 5px #E00000,
+			0px 28px 5px #F00000;
+}
+.about-section .bleeding:hover,
+.contact-section .bleeding:hover {
+  cursor: pointer;
+  color: #E22635;
 }
