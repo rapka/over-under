@@ -5,7 +5,9 @@ require('game-shim');
 var desktop = true;
 var renderBlood = true;
 
-if (window.innerWidth <= 480) {
+console.log(window.innerWidth);
+console.log(window.matchMedia("screen and (min-width: 480px)"));
+if (window.matchMedia("screen and (max-width: 480px)").matches) {
 	desktop = false;
 }
 
