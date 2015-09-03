@@ -6,10 +6,8 @@ var desktop = true;
 var renderBlood = true;
 
 console.log(window.innerWidth);
-console.log(window.matchMedia("screen and (min-width: 480px)"));
-if (window.matchMedia("screen and (max-width: 480px)").matches) {
-	desktop = false;
-}
+console.log(window.matchMedia("screen and (min-device-width: 480px)"));
+
 
 var audioBufferSouceNode;
 var currentTrack = 0;
@@ -36,7 +34,7 @@ var releases = {
 		number: 'FRENZY001',
 		artist: 'Myth',
 		title: 'Track1 / Track2',
-		date: '10/10/20XX',
+		date: 'XX/XX/20XX',
 		mp3: 'futa.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
@@ -46,6 +44,9 @@ var releases = {
 }
 
 window.onload = function() {
+	if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
+		desktop = false;
+	}
 
 	if (!desktop) {
 		$('#stop').hide();
@@ -97,6 +98,8 @@ window.onload = function() {
 		$('.label-title, .label-logo, .site-section, .site-info, .stop').toggleClass('hidden');
 	});
 };
+
+
 
 var Visualizer = function() {
 	this.audioContext = null,
