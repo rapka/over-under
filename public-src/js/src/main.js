@@ -579,7 +579,6 @@ function setup(width, height, singleComponentFboFormat){
 		advectVelocityKernel.uniforms.dt = options.step*1.0;
 		advectVelocityKernel.run();
 
-		//console.log(bloodCursor);
 		vec2.set([xd*px_x*bloodCursor*bloodPower,
 				 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
 		vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
@@ -608,6 +607,54 @@ function setup(width, height, singleComponentFboFormat){
 		drawKernel.run();
 
 	};
+
+	// Onload droplet
+	bloodWidth = (rect.width / 2) + (Math.random()*200 - 100);
+	bloodHeight = (rect.height / 2) + (Math.random()*200 - 100);
+	var x1 = bloodWidth * options.resolution,
+		y1 = bloodHeight * options.resolution,
+		xd = x1-x0,
+		yd = y1-y0;
+
+	x0 = x1,
+	y0 = y1;
+	if(x0 === 0 && y0 === 0) xd = yd = 0;
+	advectVelocityKernel.uniforms.dt = options.step*1.0;
+	advectVelocityKernel.run();
+
+	console.log(x0);
+	console.log(y0);
+	console.log(xd);
+	console.log(yd);
+	 
+
+	vec2.set([xd*px_x*60*(Math.random()*5 - 2.5),
+			 -yd*px_y*70*(Math.random()*5 - 2.5)], addForceKernel.uniforms.force);
+	vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
+	addForceKernel.run();
+
+	velocityBoundaryKernel.run();
+
+	divergenceKernel.run();
+
+	var p0 = pressureFBO0,
+		p1 = pressureFBO1,
+		p_ = p0;
+	for(var i = 0; i < options.iterations; i++) {
+		jacobiKernel.uniforms.pressure = pressureBoundaryKernel.uniforms.pressure = p0;
+		jacobiKernel.outputFBO = pressureBoundaryKernel.outputFBO = p1;
+		jacobiKernel.run();
+		pressureBoundaryKernel.run();
+		p_ = p0;
+		p0 = p1;
+		p1 = p_;
+	}
+
+	subtractPressureGradientKernel.run();
+	subtractPressureGradientBoundaryKernel.run();
+
+	drawKernel.run();
+	console.log('hey');
 }
 
 if(gl)
@@ -622,5 +669,7 @@ loader.load([
 			'js/shaders/boundary.vertex',
 			'js/shaders/kernel.vertex'
 ], init); 
+
+
 
 });
