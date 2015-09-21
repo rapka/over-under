@@ -8,13 +8,14 @@ var renderBlood = true;
 console.log(window.innerWidth);
 console.log(window.matchMedia("screen and (min-device-width: 480px)"));
 
-
+var intervalID;
 var audioBufferSouceNode;
 var currentTrack = 0;
 var offset = 0;
 var startTime = 0;
 var activeRelease = 1;
 var paused = false;
+var tickCounter = 0;
 
 var playing = false;
 var bloodHeight = 100;
@@ -22,11 +23,11 @@ var bloodPower = 10;
 var bloodWidth = 100;
 var bloodCursor = 120;
 var options = {
-	iterations: 22,
+	iterations: 18,
 	mouse_force: 10,
 	resolution: 1,
 	cursor_size: 120,
-	step: 1/120
+	step: 1/60
 };
 
 var releases = {
@@ -99,7 +100,12 @@ window.onload = function() {
 	});
 };
 
-
+var resetBlood = function () {
+	bloodHeight = 100;
+	bloodPower = 10;
+	bloodWidth = 100;
+	bloodCursor = 120;
+}
 
 var Visualizer = function() {
 	this.audioContext = null,
@@ -145,6 +151,7 @@ Visualizer.prototype = {
 						that.audioContext.decodeAudioData(audioData, function(buffer) {
 							currentTrack = activeRelease;
 							playing = true;
+							//window.clearInterval(intervalID);
 							offset = 0;
 							startTime = Date.now();
 							paused = false;
@@ -161,6 +168,7 @@ Visualizer.prototype = {
 				paused = true;
 				listenButton.innerHTML = 'Listen';
 				playing = true;
+				console.log('pop');
 			}
 			else if (!playing && offset == 0) {
 				console.log(startTime);
@@ -170,6 +178,7 @@ Visualizer.prototype = {
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
 				paused = false;
 				playing = true;
+				//window.clearInterval(intervalID);
 			}
 			else {
 				startTime = Date.now() - offset;
@@ -177,6 +186,7 @@ Visualizer.prototype = {
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, listenButton);
 				paused = false;
 				playing = true;
+				//window.clearInterval(intervalID);
 			}
 			
 		}, false);
@@ -280,17 +290,19 @@ Visualizer.prototype = {
 			var midValue = (midSum / 300) * 1.5;
 
 			var rect = canvas.getBoundingClientRect();
-
-			bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
-			bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
-			bloodPower = 5 + Math.exp((bassValue / 52));
-			bloodCursor = bloodPower * 1.8 + 20;
-			options.mouse_force = bloodPower;
+			if (playing && !paused) {
+				bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
+				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
+				bloodPower = 5 + Math.exp((bassValue / 52));
+				bloodCursor = bloodPower * 1.8 + 20;
+				options.mouse_force = bloodPower;				
+			}
 			that.animationId = requestAnimationFrame(drawMeter);
 		}
 		this.animationId = requestAnimationFrame(drawMeter);
 	},
 	_audioEnd: function(instance) {
+		resetBlood();
 		if (this.forceStop) {
 			this.forceStop = false;
 			this.status = 1;
@@ -354,6 +366,7 @@ function init(){
 		//console.log(rect.width, rect.height);
 		//if(rect.width != canvas.width || rect.height != canvas.height){
 			input.updateOffset();
+			window.clearInterval(intervalID);
 			setup(width, height, format);
 		//}
 	}, 250));
@@ -365,10 +378,8 @@ function init(){
 function setup(width, height, singleComponentFboFormat){
 
 	if (!desktop) {
-		console.log('no setop!');
 		return;
 	}
-	console.log('setup on desktop!');
 	canvas.width = width,
 	canvas.height = height;
 
@@ -568,20 +579,52 @@ function setup(width, height, singleComponentFboFormat){
 		if (!renderBlood) {
 			return;
 		}
-		var x1 = bloodWidth * options.resolution,
-			y1 = bloodHeight * options.resolution,
-			xd = x1-x0,
-			yd = y1-y0;
+		tickCounter++;
 
-		x0 = x1,
-		y0 = y1;
-		if(x0 === 0 && y0 === 0) xd = yd = 0;
+		if (tickCounter % 500 == 0) {
+			tickCounter = 0;
+		}
+
+		if (!playing && tickCounter == 40) {
+			bloodPower = 10;
+			bloodWidth = (rect.width / 2) + (Math.random()*1000 - 500);
+			bloodHeight = (rect.height / 2) + (Math.random()*600 - 300);
+			var x1 = bloodWidth * options.resolution,
+				y1 = bloodHeight * options.resolution,
+				xd = x1-x0,
+				yd = y1-y0;
+			
+			x0 = x1,
+			y0 = y1;
+			if(x0 === 0 && y0 === 0) xd = yd = 0;
+			console.log(x1);
+			console.log(y1)
+
+			
+			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
+					 -yd*px_y*70*(Math.random()*10 - 5)], addForceKernel.uniforms.force);
+			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
+			
+		 } else {
+
+
+			var x1 = bloodWidth * options.resolution,
+				y1 = bloodHeight * options.resolution,
+				xd = x1-x0,
+				yd = y1-y0;
+
+			x0 = x1,
+			y0 = y1;
+			if(x0 === 0 && y0 === 0) xd = yd = 0;
+
+
+			vec2.set([xd*px_x*bloodCursor*bloodPower,
+					 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
+			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
+		}
+
 		advectVelocityKernel.uniforms.dt = options.step*1.0;
 		advectVelocityKernel.run();
-
-		vec2.set([xd*px_x*bloodCursor*bloodPower,
-				 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
-		vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
 		addForceKernel.run();
 
 		velocityBoundaryKernel.run();
@@ -606,55 +649,10 @@ function setup(width, height, singleComponentFboFormat){
 
 		drawKernel.run();
 
+
 	};
 
-	// Onload droplet
-	bloodWidth = (rect.width / 2) + (Math.random()*200 - 100);
-	bloodHeight = (rect.height / 2) + (Math.random()*200 - 100);
-	var x1 = bloodWidth * options.resolution,
-		y1 = bloodHeight * options.resolution,
-		xd = x1-x0,
-		yd = y1-y0;
 
-	x0 = x1,
-	y0 = y1;
-	if(x0 === 0 && y0 === 0) xd = yd = 0;
-	advectVelocityKernel.uniforms.dt = options.step*1.0;
-	advectVelocityKernel.run();
-
-	console.log(x0);
-	console.log(y0);
-	console.log(xd);
-	console.log(yd);
-	 
-
-	vec2.set([xd*px_x*60*(Math.random()*5 - 2.5),
-			 -yd*px_y*70*(Math.random()*5 - 2.5)], addForceKernel.uniforms.force);
-	vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
-	addForceKernel.run();
-
-	velocityBoundaryKernel.run();
-
-	divergenceKernel.run();
-
-	var p0 = pressureFBO0,
-		p1 = pressureFBO1,
-		p_ = p0;
-	for(var i = 0; i < options.iterations; i++) {
-		jacobiKernel.uniforms.pressure = pressureBoundaryKernel.uniforms.pressure = p0;
-		jacobiKernel.outputFBO = pressureBoundaryKernel.outputFBO = p1;
-		jacobiKernel.run();
-		pressureBoundaryKernel.run();
-		p_ = p0;
-		p0 = p1;
-		p1 = p_;
-	}
-
-	subtractPressureGradientKernel.run();
-	subtractPressureGradientBoundaryKernel.run();
-
-	drawKernel.run();
-	console.log('hey');
 }
 
 if(gl)
