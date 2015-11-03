@@ -167,7 +167,6 @@ html, body {
 }
 
 .label-logo {
-	padding-top: 100px;
 	z-index: 10;
 	width: 50%;
 	text-align: center;
@@ -175,9 +174,15 @@ html, body {
 	margin: auto;
 	color: white;
 	font-size: 400%;
+	top: -70px;
+
+	.logo-image {
+		width: 80%;
+	}
 }	
 
 .site-section {
+	top: -190px;
 	display: none;
 
 	&.selected {
@@ -219,6 +224,7 @@ html, body {
 }
 
 .releases-section {
+
 	opacity: 1;
 	transition: opacity 1s linear;
 	position: relative;
@@ -232,10 +238,12 @@ html, body {
 	}
 }
 
+
+
 .release-info {
 	font-size: 300%;
 	text-align: center;
-	
+
 	.release-links {
 
 		#buy-button {
@@ -337,7 +345,15 @@ html, body {
 
 	html, body {
 		overflow: hidden;
+		letter-spacing: 8px;
 	}
+
+	body {
+		background-image: url('../img/small-spray.png');
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+	}
+
 	#listen-button {
 		width: 320px;
 	}
@@ -356,6 +372,7 @@ html, body {
 	//	font-size: 80px !important;
 		 .site-section {
 			width: 100%;
+			top: 0;
 		}
 	}
 
@@ -378,12 +395,16 @@ html, body {
 	.buy-link {
 		width: 100%;
 		display: block !important;
+		padding: 0;
 	}
 
 	.label-logo {
 		//font-size: 80px;
 		padding: 0;
 		width: auto;
-	}
 
+		.logo-image {
+			width: 50px;
+		}
+	}
 } 

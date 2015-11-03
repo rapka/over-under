@@ -110,7 +110,7 @@ var resetBlood = function () {
 var Visualizer = function() {
 	this.audioContext = null,
 	this.source = null, //the audio source
-	this.infoUpdateId = null, //to sotore the setTimeout ID and clear the interval
+	this.infoUpdateId = null, //to store the setTimeout ID and clear the interval
 	this.animationId = null,
 	this.status = 0, //flag for sound is playing 1 or stopped 0
 	this.forceStop = false,
@@ -580,7 +580,7 @@ function setup(width, height, singleComponentFboFormat){
 			return;
 		}
 		tickCounter++;
-
+ 
 		if (tickCounter % 500 == 0) {
 			tickCounter = 0;
 		}
