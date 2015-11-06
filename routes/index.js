@@ -1,5 +1,5 @@
 exports.routes = function(app) {
-	app.get('/', exports.index);
+	app.get('/', exports.blood);
 	app.get('/blood', exports.blood);
 	app.get('/static', exports.blood);
 	app.get('/track/:track', exports.track)

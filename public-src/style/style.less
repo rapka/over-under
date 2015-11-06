@@ -4,18 +4,18 @@ html, body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
-	overflow: hidden;
+	//overflow: hidden;
 	background-color: black;
 	color: white;
 	font-size: 12px;
 	font-family: 'Roboto Slab', serif;
-	letter-spacing: 10px;
+	letter-spacing: 13px;
 }
 
 .visualizer {
 
 	#cc, #video {
-		position: absolute;
+		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
@@ -168,21 +168,23 @@ html, body {
 
 .label-logo {
 	z-index: 10;
-	width: 50%;
+	//width: 50%;
+	max-width: 1000px;
 	text-align: center;
 	position: relative;
 	margin: auto;
 	color: white;
 	font-size: 400%;
-	top: -70px;
+	top: -80px;
 
 	.logo-image {
+		opacity: 0.95;
 		width: 80%;
 	}
 }	
 
 .site-section {
-	top: -190px;
+	top: -250px;
 	display: none;
 
 	&.selected {
@@ -241,12 +243,14 @@ html, body {
 
 
 .release-info {
-	font-size: 300%;
+	font-size: 250%;
 	text-align: center;
+	line-height: 1.25em;
 
 	.release-links {
 
 		#buy-button {
+			display: none;
 			-moz-user-select: none;
 			-webkit-user-select: none;
 			-ms-user-select: none;
@@ -363,6 +367,7 @@ html, body {
 	}
 
 	.release-info {
+		line-height: auto;
 		//font-size: 80px !important;
 	}
 	

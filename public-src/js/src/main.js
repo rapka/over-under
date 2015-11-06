@@ -26,7 +26,7 @@ var options = {
 	iterations: 18,
 	mouse_force: 10,
 	resolution: 1,
-	cursor_size: 120,
+	cursor_size: 160,
 	step: 1/60
 };
 
