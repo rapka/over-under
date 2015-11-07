@@ -8,4 +8,8 @@ varying vec2 uv;
 
 void main(){
     gl_FragColor = texture2D(source, uv-texture2D(velocity, uv).xy*dt*px1)*scale;
+
+        if (gl_FragColor[0] > 0.7) {
+    	gl_FragColor[0] = 0.7;
+    }
 }

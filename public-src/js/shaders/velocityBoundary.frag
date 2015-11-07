@@ -10,4 +10,5 @@ vec2 velocityAt(uv){
 
 void main(){
     gl_FragColor = vec4(scale*velocityAt(uv), 1.0, 1.0);
+    gl_FragColor[0] = gl_FragColor[0] * 0.1;
 }
