@@ -5,8 +5,11 @@ require('game-shim');
 var desktop = true;
 var renderBlood = true;
 
-console.log(window.innerWidth);
-console.log(window.matchMedia("screen and (min-device-width: 480px)"));
+if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
+	desktop = false;
+}
+
+console.log('desktop mode', desktop);
 
 var intervalID;
 var audioBufferSouceNode;
@@ -45,9 +48,7 @@ var releases = {
 }
 
 window.onload = function() {
-	if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
-		desktop = false;
-	}
+
 
 	if (!desktop) {
 		$('#stop').hide();
@@ -168,7 +169,6 @@ Visualizer.prototype = {
 				paused = true;
 				listenButton.innerHTML = 'Listen';
 				playing = true;
-				console.log('pop');
 			}
 			else if (!playing && offset == 0) {
 				console.log(startTime);
@@ -178,7 +178,6 @@ Visualizer.prototype = {
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
 				paused = false;
 				playing = true;
-				//window.clearInterval(intervalID);
 			}
 			else {
 				startTime = Date.now() - offset;
@@ -186,7 +185,6 @@ Visualizer.prototype = {
 				that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, listenButton);
 				paused = false;
 				playing = true;
-				//window.clearInterval(intervalID);
 			}
 			
 		}, false);
@@ -234,7 +232,10 @@ Visualizer.prototype = {
 
 			track.innerHTML = 'Listen';
 		};
-		this._drawSpectrum(analyser);
+		if (desktop) {
+			this._drawSpectrum(analyser);
+		}
+		
 	},
 	_drawSpectrum: function(analyser) {
 		var that = this,
@@ -313,7 +314,8 @@ Visualizer.prototype = {
 
 }
 
-var Loader = require('engine/loader'),
+if (desktop) {
+	var Loader = require('engine/loader'),
 	Clock = require('engine/clock').Clock,
 	InputHandler = require('engine/input').Handler,
 	debounce = require('engine/utils').debounce,
@@ -326,24 +328,39 @@ var Loader = require('engine/loader'),
 	ComputeKernel = require('compute').Kernel,
 	vec2 = glm.vec2;
 
-var canvas = document.getElementById('c'),
-	gl = glcontext.initialize(canvas, {
-		context: {
-			depth: false
-		},
-		debug: false,
-		//log_all: true,
-		extensions: {
-			texture_float: true
-		}
-	}, fail),
-	clock = new Clock(canvas),
-	input = new InputHandler(canvas),
-	loader = new Loader(),
-	resources = loader.resources,
-	shaders = new ShaderManager(gl, resources);
+	var canvas = document.getElementById('c'),
+		gl = glcontext.initialize(canvas, {
+			context: {
+				depth: false
+			},
+			debug: false,
+			//log_all: true,
+			extensions: {
+				texture_float: true
+			}
+		}, fail),
+		clock = new Clock(canvas),
+		input = new InputHandler(canvas),
+		loader = new Loader(),
+		resources = loader.resources,
+		shaders = new ShaderManager(gl, resources);
 
-window.gl = gl;
+	window.gl = gl;
+
+	console.log('loading shaders;');
+	loader.load([
+			'js/shaders/advect.frag',
+			'js/shaders/addForce.frag',
+			'js/shaders/divergence.frag',
+			'js/shaders/jacobi.frag',
+			'js/shaders/subtractPressureGradient.frag',
+			'js/shaders/visualize.frag',
+			'js/shaders/cursor.vertex',
+			'js/shaders/boundary.vertex',
+			'js/shaders/kernel.vertex'
+	], init); 
+}
+
 
 function fail(el, msg, id) {
 	document.getElementById('video').style.display = 'block';
@@ -655,19 +672,8 @@ function setup(width, height, singleComponentFboFormat){
 
 }
 
-if(gl)
-loader.load([
-			'js/shaders/advect.frag',
-			'js/shaders/addForce.frag',
-			'js/shaders/divergence.frag',
-			'js/shaders/jacobi.frag',
-			'js/shaders/subtractPressureGradient.frag',
-			'js/shaders/visualize.frag',
-			'js/shaders/cursor.vertex',
-			'js/shaders/boundary.vertex',
-			'js/shaders/kernel.vertex'
-], init); 
+if(desktop && gl) {
 
-
+}
 
 });
