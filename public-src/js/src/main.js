@@ -36,10 +36,10 @@ var options = {
 var releases = {
 	1: {
 		number: 'FRENZY001',
-		artist: 'Unkown Artist',
-		title: 'Track1 / Track2',
+		artist: 'Mere Formality',
+		title: 'Tiger Gate / Unknown',
 		date: 'XX/XX/20XX',
-		mp3: 'check.mp3',
+		mp3: 'tiger.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
 		juno: 'http://www.junodownload.com',
@@ -48,7 +48,6 @@ var releases = {
 }
 
 window.onload = function() {
-
 
 	if (!desktop) {
 		$('#stop').hide();
