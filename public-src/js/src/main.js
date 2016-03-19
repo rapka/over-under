@@ -21,14 +21,14 @@ var paused = false;
 var tickCounter = 0;
 
 var playing = false;
-var bloodHeight = 100;
+var bloodHeight = 50;
 var bloodPower = 10;
-var bloodWidth = 100;
+var bloodWidth = 50;
 var bloodCursor = 120;
 var options = {
 	iterations: 18,
 	mouse_force: 10,
-	resolution: 1,
+	resolution: 0.5,
 	cursor_size: 160,
 	step: 1/60
 };
@@ -36,9 +36,9 @@ var options = {
 var releases = {
 	1: {
 		number: 'FRENZY001',
-		artist: 'Mere Formality',
-		title: 'Tiger Gate / Unknown',
-		date: 'XX/XX/20XX',
+		artist: 'Fallow',
+		title: 'Loco /  Touch Ya Knees',
+		date: 'XX/XX/2016',
 		mp3: 'tiger.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
@@ -48,7 +48,6 @@ var releases = {
 }
 
 window.onload = function() {
-
 	if (!desktop) {
 		$('#stop').hide();
 		$('#hide').hide();
@@ -101,9 +100,9 @@ window.onload = function() {
 };
 
 var resetBlood = function () {
-	bloodHeight = 100;
+	bloodHeight = 50;
+	bloodWidth = 50;
 	bloodPower = 10;
-	bloodWidth = 100;
 	bloodCursor = 120;
 }
 
