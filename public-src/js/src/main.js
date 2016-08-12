@@ -21,15 +21,15 @@ var paused = false;
 var tickCounter = 0;
 
 var playing = false;
-var bloodHeight = 50;
-var bloodPower = 10;
-var bloodWidth = 50;
-var bloodCursor = 120;
+var bloodHeight = 20;
+var bloodPower = 20;
+var bloodWidth = 20;
+var bloodCursor = 80;
 var options = {
 	iterations: 18,
 	mouse_force: 10,
 	resolution: 0.5,
-	cursor_size: 160,
+	cursor_size: 80,
 	step: 1/60
 };
 
@@ -39,7 +39,7 @@ var releases = {
 		artist: 'Fallow',
 		title: 'Loco /  Touch Ya Knees',
 		date: 'XX/XX/2016',
-		mp3: 'tiger.mp3',
+		mp3: 'knees.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
 		juno: 'http://www.junodownload.com',
@@ -144,7 +144,7 @@ Visualizer.prototype = {
 				request.open('GET', 'track/' + releases[activeRelease].mp3, true);
 				request.responseType = 'arraybuffer';
 				listenButton.innerHTML = '...';
-				
+
 				request.onload = function() {
 						var audioData = request.response;
 						that.audioContext.decodeAudioData(audioData, function(buffer) {
@@ -159,7 +159,7 @@ Visualizer.prototype = {
 						}, function(e){"Error with decoding audio data" + e.err});
 				}
 				request.send();
-				
+
 			}
 			else if (playing){
 				audioBufferSouceNode.stop();
@@ -184,9 +184,9 @@ Visualizer.prototype = {
 				paused = false;
 				playing = true;
 			}
-			
+
 		}, false);
-	
+
 	},
 
 	_visualize: function(audioContext, buffer, offset, track) {
@@ -233,7 +233,7 @@ Visualizer.prototype = {
 		if (desktop) {
 			this._drawSpectrum(analyser);
 		}
-		
+
 	},
 	_drawSpectrum: function(analyser) {
 		var that = this,
@@ -294,7 +294,7 @@ Visualizer.prototype = {
 				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
 				bloodPower = 5 + Math.exp((bassValue / 52));
 				bloodCursor = bloodPower * 1.8 + 20;
-				options.mouse_force = bloodPower;				
+				options.mouse_force = bloodPower;
 			}
 			that.animationId = requestAnimationFrame(drawMeter);
 		}
@@ -356,7 +356,7 @@ if (desktop) {
 			'js/shaders/cursor.vertex',
 			'js/shaders/boundary.vertex',
 			'js/shaders/kernel.vertex'
-	], init); 
+	], init);
 }
 
 
@@ -595,7 +595,7 @@ function setup(width, height, singleComponentFboFormat){
 			return;
 		}
 		tickCounter++;
- 
+
 		if (tickCounter % 500 == 0) {
 			tickCounter = 0;
 		}
@@ -608,18 +608,18 @@ function setup(width, height, singleComponentFboFormat){
 				y1 = bloodHeight * options.resolution,
 				xd = x1-x0,
 				yd = y1-y0;
-			
+
 			x0 = x1,
 			y0 = y1;
 			if(x0 === 0 && y0 === 0) xd = yd = 0;
 			console.log(x1);
 			console.log(y1)
 
-			
+
 			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
 					 -yd*px_y*70*(Math.random()*10 - 5)], addForceKernel.uniforms.force);
 			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
-			
+
 		 } else {
 
 

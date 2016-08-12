@@ -45,3 +45,5 @@ aws.json
 
 #sessions directory
 sessions
+
+node_modules/*
