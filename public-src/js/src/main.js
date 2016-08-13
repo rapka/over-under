@@ -39,7 +39,7 @@ var releases = {
 		artist: 'Fallow',
 		title: 'Loco /  Touch Ya Knees',
 		date: 'XX/XX/2016',
-		mp3: 'knees.mp3',
+		mp3: 'loco.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
 		juno: 'http://www.junodownload.com',
@@ -252,7 +252,6 @@ Visualizer.prototype = {
 		}
 		var drawMeter = function() {
 
-
 			analyser.fftSize = 2048;
 			analyser.minDecibels = -80;
 			analyser.maxDecibels = -10;
@@ -275,7 +274,7 @@ Visualizer.prototype = {
 
 
 			var bassValue = (array[0] + array[1] + array[2] + array[3]) / 4;
-			var kickValue = (array[3] + array[4] + array[5] +array[6] + array[7] ) / 5;
+			var kickValue = (array[3] + array[4] + array[5] + array[6] + array[7] ) / 5;
 			var midSum = 0;
 			var highSum = 0;
 			for (var i = 25; i < 325; i++) {
@@ -288,11 +287,17 @@ Visualizer.prototype = {
 			var highValue = (highSum / 500) * 5;
 			var midValue = (midSum / 300) * 1.5;
 
+			//Transform sub value
+			bassValue = Math.max(0, 10 * (Math.exp(bassValue * 0.02) - 2));
+			kickValue = Math.max(0, 10 * (Math.exp((kickValue + 10) * 0.02) - 2));
+
+			//console.log('sub', bassValue, 'kick', kickValue);
+
 			var rect = canvas.getBoundingClientRect();
 			if (playing && !paused) {
 				bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
 				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
-				bloodPower = 5 + Math.exp((bassValue / 52));
+				bloodPower = Math.max((bassValue / 11), 3);
 				bloodCursor = bloodPower * 1.8 + 20;
 				options.mouse_force = bloodPower;
 			}
@@ -573,7 +578,6 @@ function setup(width, height, singleComponentFboFormat){
 			output: velocityFBO0
 		}),
 
-
 		drawKernel = new ComputeKernel(gl, {
 			shader: shaders.get('kernel', 'visualize'),
 			mesh: all,
@@ -613,7 +617,7 @@ function setup(width, height, singleComponentFboFormat){
 			y0 = y1;
 			if(x0 === 0 && y0 === 0) xd = yd = 0;
 			console.log(x1);
-			console.log(y1)
+			console.log(y1);
 
 
 			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
@@ -664,10 +668,7 @@ function setup(width, height, singleComponentFboFormat){
 
 		drawKernel.run();
 
-
 	};
-
-
 }
 
 if(desktop && gl) {
