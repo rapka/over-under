@@ -9,7 +9,7 @@ if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
 	desktop = false;
 }
 
-console.log('desktop mode', desktop);
+console.log('Desktop mode:', desktop);
 
 var intervalID;
 var audioBufferSouceNode;
@@ -19,6 +19,7 @@ var startTime = 0;
 var activeRelease = 1;
 var paused = false;
 var tickCounter = 0;
+var monitor = false;
 
 var playing = false;
 var bloodHeight = 20;
@@ -29,33 +30,51 @@ var options = {
 	iterations: 18,
 	mouse_force: 10,
 	resolution: 0.5,
-	cursor_size: 80,
+	cursor_size: 90,
 	step: 1/60
 };
 
-var releases = {
-	1: {
-		number: 'FRENZY001',
-		artist: 'Fallow',
-		title: 'Loco /  Touch Ya Knees',
-		date: 'XX/XX/2016',
-		mp3: 'loco.mp3',
-		boomkat: 'http://www.boomkat.com',
-		bleep: 'http://www.bleep.com',
-		juno: 'http://www.junodownload.com',
-		bandcamp: 'http://www.bandcamp.com'
-	}
-}
+var gainNode;
 
 window.onload = function() {
+	console.log('Welcome to the blood frenzy realtime visualizer!');
+	console.log('Controls:');
+	console.log('H: disable visualiztion entirely (panic button)');
+	console.log('M: Mute/unmute audio monitoring. Disabled by default');
+
 	if (!desktop) {
 		$('#stop').hide();
 		$('#hide').hide();
 	}
 
+	$(document).keypress(function(event) {
+		console.log('Handler for .keypress() called. - ' + event.key);
+
+		// Disable vis entirely
+		if (event.key.toLowerCase() === 'h') {
+			renderBlood = !renderBlood;
+
+			if (gl) {
+				gl.clearColor(0.0, 0.0, 0.0, 1.0);
+				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+			}
+		}
+
+		// (un) mute audio
+		if (event.key.toLowerCase() === 'm') {
+			console.log('mottt');
+			if (gainNode.gain.value === 0) {
+				gainNode.gain.value = 1;
+			} else {
+				gainNode.gain.value = 0;
+			}
+		}
+	});
+
 	new Visualizer().ini();
 	var player = document.getElementById("player");
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
+	gainNode = audioCtx.createGain();
 
 	$('.info-link').click(function () {
 		console.log($(this)[0].id);
@@ -65,14 +84,7 @@ window.onload = function() {
 		$(this).toggleClass('selected');
 	});
 
-	$('#release-number').text(releases[activeRelease].number);
-	$('#release-artist').text(releases[activeRelease].artist);
-	$('#release-title').text(releases[activeRelease].title);
-	$('#release-date').text(releases[activeRelease].date);
-	$('#bandcamp').attr('href', releases[activeRelease].bandcamp);
-	$('#juno').attr('href', releases[activeRelease].juno);
-	$('#boomkat').attr('href', releases[activeRelease].boomkat);
-	$('#bleep').attr('href', releases[activeRelease].bleep);
+	
 	$('#stop').click(function () {
 		renderBlood = !renderBlood;
 
@@ -90,13 +102,54 @@ window.onload = function() {
 	});
 
 	$('#hide').click(function () {
-		if ($('#hide').text() === '[show site]') {
-			$('#hide').text('[hide site]');
+		if (gainNode.gain.value === 0) {
+			gainNode.gain.value = 1;
 		} else {
-			$('#hide').text('[show site]');
+			gainNode.gain.value = 0;
 		}
-		$('.label-title, .label-logo, .site-section, .site-info, .stop').toggleClass('hidden');
 	});
+
+	//start visualizer immediately
+	var that = this;
+
+	var listenButton = document.getElementById('listen-button');
+	
+	var loaded = false;
+	
+	var request = new XMLHttpRequest();
+	// fork getUserMedia for multiple browser versions, for those that need prefixes
+
+	navigator.getUserMedia = (navigator.getUserMedia ||
+		navigator.webkitGetUserMedia ||
+		navigator.mozGetUserMedia ||
+		navigator.msGetUserMedia);
+
+	if (navigator.getUserMedia) {
+		console.log('Audio input supported!');
+		navigator.getUserMedia (
+			// constraints: audio and video for this app
+			{
+				audio: true,
+				video: false
+			},
+	
+			// Success callback
+			function(stream) {
+				// Create a MediaStreamAudioSourceNode
+				// Feed the HTMLMediaElement into it
+				var source = audioCtx.createMediaStreamSource(stream);
+				new Visualizer()._visualize(audioCtx, source, gainNode);
+			},
+	
+			// Error callback
+			function(err) {
+				console.log('The following gUM error occured: ' + err);
+			}
+		);
+	} else {
+		console.log('getUserMedia not supported on your browser!');
+	}	
+
 };
 
 var resetBlood = function () {
@@ -119,7 +172,6 @@ var Visualizer = function() {
 Visualizer.prototype = {
 	ini: function() {
 		this._prepareAPI();
-		this._addEventListner();
 	},
 	_prepareAPI: function() {
 		//fix browser vender for AudioContext and requestAnimationFrame
@@ -132,104 +184,47 @@ Visualizer.prototype = {
 			console.log(e);
 		}
 	},
-	_addEventListner: function() {
-		var that = this;
-		var tracks = ['gaze.mp3'];
 
-		var listenButton = document.getElementById('listen-button');
-		listenButton.addEventListener("click", function() {
-			var loaded = false;
-			if (!playing && currentTrack != activeRelease) {
-				var request = new XMLHttpRequest();
-				request.open('GET', 'track/' + releases[activeRelease].mp3, true);
-				request.responseType = 'arraybuffer';
-				listenButton.innerHTML = '...';
-
-				request.onload = function() {
-						var audioData = request.response;
-						that.audioContext.decodeAudioData(audioData, function(buffer) {
-							currentTrack = activeRelease;
-							playing = true;
-							//window.clearInterval(intervalID);
-							offset = 0;
-							startTime = Date.now();
-							paused = false;
-							that._visualize(that.audioContext, buffer, offset, listenButton);
-							listenButton.innerHTML = 'Pause';
-						}, function(e){"Error with decoding audio data" + e.err});
-				}
-				request.send();
-
-			}
-			else if (playing){
-				audioBufferSouceNode.stop();
-				offset = Date.now() - startTime;
-				paused = true;
-				listenButton.innerHTML = 'Listen';
-				playing = true;
-			}
-			else if (!playing && offset == 0) {
-				console.log(startTime);
-				listenButton.innerHTML = 'Pause';
-				offset = 0;
-				startTime = Date.now();
-				that._visualize(that.audioContext, audioBufferSouceNode.buffer, offset, listenButton);
-				paused = false;
-				playing = true;
-			}
-			else {
-				startTime = Date.now() - offset;
-				listenButton.innerHTML = 'Pause';
-				that._visualize(that.audioContext, audioBufferSouceNode.buffer, (offset / 1000) % audioBufferSouceNode.buffer.duration, listenButton);
-				paused = false;
-				playing = true;
-			}
-
-		}, false);
-
-	},
-
-	_visualize: function(audioContext, buffer, offset, track) {
+	_visualize: function(audioContext, source, gainNode) {
 		audioBufferSouceNode = audioContext.createBufferSource(),
 		analyser = audioContext.createAnalyser(),
 		that = this;
 		//connect the source to the analyser
-		audioBufferSouceNode.connect(analyser);
-		//connect the analyser to the destination(the speaker), or we won't hear the sound
-		analyser.connect(audioContext.destination);
-		//then assign the buffer to the buffer source node
-		if (buffer == null) {
-			audioBufferSouceNode.stop();
-			return;
-		}
+		source.connect(analyser);
 
-		audioBufferSouceNode.buffer = buffer;
+		source.connect(gainNode);
+		
+		//connect the analyser to the destination(the speaker), or we won't hear the sound
+		gainNode.connect(audioContext.destination);
+		gainNode.gain.value = 0;
+
+		//analyser.connect(audioContext.destination);
+		
+
+		
+		//then assign the buffer to the buffer source node
+		// if (buffer == null) {
+		// 	audioBufferSouceNode.stop();
+		// 	return;
+		// }
+
+		//audioBufferSouceNode.buffer = buffer;
 		//play the source
-		if (!audioBufferSouceNode.start) {
-			audioBufferSouceNode.start = audioBufferSouceNode.noteOn //in old browsers use noteOn method
-			audioBufferSouceNode.stop = audioBufferSouceNode.noteOff //in old browsers use noteOn method
-		};
+		// if (!audioBufferSouceNode.start) {
+		// 	audioBufferSouceNode.start = audioBufferSouceNode.noteOn //in old browsers use noteOn method
+		// 	audioBufferSouceNode.stop = audioBufferSouceNode.noteOff //in old browsers use noteOn method
+		// };
 		//stop the previous sound if any
-		if (this.animationId !== null) {
-			cancelAnimationFrame(this.animationId);
-		}
-		if (this.source !== null) {
-			this.source.stop(0);
-		}
-		audioBufferSouceNode.start(0, offset);
+		// if (this.animationId !== null) {
+		// 	cancelAnimationFrame(this.animationId);
+		// }
+		// if (this.source !== null) {
+		// 	this.source.stop(0);
+		// }
+		//audioBufferSouceNode.start(0, offset);
 		this.status = 1;
 		this.source = audioBufferSouceNode;
-		audioBufferSouceNode.onended = function() {
-			offset = 0;
-			if (!paused) {
-				currentTrack = 0;
-			}
 
-			startTime = 0;
-			playing = false;
-
-			track.innerHTML = 'Listen';
-		};
 		if (desktop) {
 			this._drawSpectrum(analyser);
 		}
@@ -272,7 +267,6 @@ Visualizer.prototype = {
 				};
 			};
 
-
 			var bassValue = (array[0] + array[1] + array[2] + array[3]) / 4;
 			var kickValue = (array[3] + array[4] + array[5] + array[6] + array[7] ) / 5;
 			var midSum = 0;
@@ -281,7 +275,7 @@ Visualizer.prototype = {
 					midSum += array[i];
 			};
 
-			 for (var i = 500; i < 1000; i++) {
+			 for (var i = 400; i < 1000; i++) {
 					highSum += array[i];
 			};
 			var highValue = (highSum / 500) * 5;
@@ -294,25 +288,15 @@ Visualizer.prototype = {
 			//console.log('sub', bassValue, 'kick', kickValue);
 
 			var rect = canvas.getBoundingClientRect();
-			if (playing && !paused) {
-				bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
+				bloodWidth = (rect.width / 2) - 290 + kickValue + bassValue;
 				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
-				bloodPower = Math.max((bassValue / 11), 3);
+				bloodPower = Math.max((bassValue / 10), 3);
 				bloodCursor = bloodPower * 1.8 + 20;
 				options.mouse_force = bloodPower;
-			}
 			that.animationId = requestAnimationFrame(drawMeter);
+
 		}
 		this.animationId = requestAnimationFrame(drawMeter);
-	},
-	_audioEnd: function(instance) {
-		resetBlood();
-		if (this.forceStop) {
-			this.forceStop = false;
-			this.status = 1;
-			return;
-		};
-		this.status = 0;
 	}
 
 }
@@ -350,7 +334,7 @@ if (desktop) {
 
 	window.gl = gl;
 
-	console.log('loading shaders;');
+	console.log('loading shaders...');
 	loader.load([
 			'js/shaders/advect.frag',
 			'js/shaders/addForce.frag',
@@ -396,7 +380,6 @@ function init(){
 }
 
 function setup(width, height, singleComponentFboFormat){
-
 	if (!desktop) {
 		return;
 	}
@@ -598,46 +581,21 @@ function setup(width, height, singleComponentFboFormat){
 		if (!renderBlood) {
 			return;
 		}
-		tickCounter++;
+		
+		var x1 = bloodWidth * options.resolution,
+			y1 = bloodHeight * options.resolution,
+			xd = x1-x0,
+			yd = y1-y0;
 
-		if (tickCounter % 500 == 0) {
-			tickCounter = 0;
-		}
-
-		if (!playing && tickCounter == 40) {
-			bloodPower = 10;
-			bloodWidth = (rect.width / 2) + (Math.random()*1000 - 500);
-			bloodHeight = (rect.height / 2) + (Math.random()*600 - 300);
-			var x1 = bloodWidth * options.resolution,
-				y1 = bloodHeight * options.resolution,
-				xd = x1-x0,
-				yd = y1-y0;
-
-			x0 = x1,
-			y0 = y1;
-			if(x0 === 0 && y0 === 0) xd = yd = 0;
-			console.log(x1);
-			console.log(y1);
-
-			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
-					 -yd*px_y*70*(Math.random()*10 - 5)], addForceKernel.uniforms.force);
-			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
-
-		 } else {
-			var x1 = bloodWidth * options.resolution,
-				y1 = bloodHeight * options.resolution,
-				xd = x1-x0,
-				yd = y1-y0;
-
-			x0 = x1,
-			y0 = y1;
-			if(x0 === 0 && y0 === 0) xd = yd = 0;
+		x0 = x1,
+		y0 = y1;
+		if(x0 === 0 && y0 === 0) xd = yd = 0;
 
 
-			vec2.set([xd*px_x*bloodCursor*bloodPower,
-					 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
-			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
-		}
+		vec2.set([xd*px_x*bloodCursor*bloodPower,
+				 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);
+		vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
+		
 
 		advectVelocityKernel.uniforms.dt = options.step*1.0;
 		advectVelocityKernel.run();
@@ -669,8 +627,6 @@ function setup(width, height, singleComponentFboFormat){
 	};
 }
 
-if(desktop && gl) {
 
-}
 
 });

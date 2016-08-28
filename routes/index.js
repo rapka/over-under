@@ -1,6 +1,7 @@
 exports.routes = function(app) {
 	app.get('/', exports.blood);
 	app.get('/blood', exports.blood);
+	app.get('/visualizer', exports.visualizer);
 	app.get('/static', exports.blood);
 	app.get('/track/:track', exports.track)
 };
@@ -11,6 +12,10 @@ exports.index = function(req, res) {
 
 exports.blood = function(req, res) {
 	res.render('blood', {});
+};
+
+exports.visualizer = function(req, res) {
+	res.render('bloodVis', {});
 };
 
 exports.track = function(req, res) {
