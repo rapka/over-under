@@ -48,11 +48,11 @@ window.onload = function() {
 	}
 
 	$(document).keypress(function(event) {
-		console.log('Handler for .keypress() called. - ' + event.key);
 
 		// Disable vis entirely
 		if (event.key.toLowerCase() === 'h') {
 			renderBlood = !renderBlood;
+			console.log('Toggling visualiztion...');
 
 			if (gl) {
 				gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -62,10 +62,12 @@ window.onload = function() {
 
 		// (un) mute audio
 		if (event.key.toLowerCase() === 'm') {
-			console.log('mottt');
+			
 			if (gainNode.gain.value === 0) {
+				console.log('Unmuting...');
 				gainNode.gain.value = 1;
 			} else {
+				console.log('Muting...');
 				gainNode.gain.value = 0;
 			}
 		}
