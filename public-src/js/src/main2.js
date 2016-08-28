@@ -2,6 +2,8 @@ define(function(require, exports, module){
 require('game-shim');
 // only when optimized
 
+require('adapter-latest');
+
 var desktop = true;
 var renderBlood = true;
 
@@ -38,6 +40,7 @@ var gainNode;
 
 window.onload = function() {
 	console.log('Welcome to the blood frenzy realtime visualizer!');
+	console.log('Only Chrome is supported at the moment');
 	console.log('Controls:');
 	console.log('H: disable visualiztion entirely (panic button)');
 	console.log('M: Mute/unmute audio monitoring. Disabled by default');
@@ -121,12 +124,13 @@ window.onload = function() {
 	var request = new XMLHttpRequest();
 	// fork getUserMedia for multiple browser versions, for those that need prefixes
 
-	navigator.getUserMedia = (navigator.getUserMedia ||
-		navigator.webkitGetUserMedia ||
-		navigator.mozGetUserMedia ||
-		navigator.msGetUserMedia);
+	// navigator.getUserMedia = (navigator.getUserMedia ||
+	// 	navigator.webkitGetUserMedia ||
+	// 	navigator.mediaDevices.getUserMedia ||
+	// 	navigator.mozGetUserMedia ||
+	// 	navigator.msGetUserMedia);
 
-	if (navigator.getUserMedia) {
+	if (navigator.getUserMedia ) {
 		console.log('Audio input supported!');
 		navigator.getUserMedia (
 			// constraints: audio and video for this app
@@ -287,7 +291,7 @@ Visualizer.prototype = {
 			bassValue = Math.max(0, 10 * (Math.exp(bassValue * 0.02) - 2));
 			kickValue = Math.max(0, 10 * (Math.exp((kickValue + 10) * 0.02) - 2));
 
-			//console.log('sub', bassValue, 'kick', kickValue);
+			console.log('sub', bassValue, 'kick', kickValue);
 
 			var rect = canvas.getBoundingClientRect();
 				bloodWidth = (rect.width / 2) - 290 + kickValue + bassValue;
