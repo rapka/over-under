@@ -1,6 +1,7 @@
 attribute vec3 position;
 uniform vec2 px;
 varying vec2 uv;
+uniform float visualizerMode;
 
 precision highp float;
 

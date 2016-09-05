@@ -5,6 +5,7 @@ uniform float alpha;
 uniform float beta;
 uniform vec2 px;
 varying vec2 uv;
+uniform float visualizerMode;
 
 void main(){
     float x0 = texture2D(pressure, uv-vec2(px.x, 0)).r;

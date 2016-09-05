@@ -584,7 +584,8 @@ function setup(width, height, singleComponentFboFormat){
 			uniforms: {
 				velocity: velocityFBO0,
 				pressure: pressureFBO0,
-				px: px
+				px: px,
+				color: false
 			},
 			output: null
 		});
@@ -604,7 +605,7 @@ function setup(width, height, singleComponentFboFormat){
 			tickCounter = 0;
 		}
 
-		if (!playing && tickCounter == 40) {
+		if (!playing && tickCounter == 80) {
 			bloodPower = 10;
 			bloodWidth = (rect.width / 2) + (Math.random()*1000 - 500);
 			bloodHeight = (rect.height / 2) + (Math.random()*600 - 300);

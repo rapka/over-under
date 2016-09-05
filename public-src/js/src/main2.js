@@ -1,6 +1,5 @@
 define(function(require, exports, module){
 require('game-shim');
-// only when optimized
 
 require('adapter-latest');
 
@@ -12,6 +11,10 @@ if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
 }
 
 console.log('Desktop mode:', desktop);
+
+var BPM = 140;
+var resetRate = Math.floor((1 / BPM) * 60 * 60 * 4 * 8);
+
 
 var intervalID;
 var audioBufferSouceNode;
@@ -36,14 +39,22 @@ var options = {
 	step: 1/60
 };
 
+
+var forceColor = false;
+var colorOn = false;
 var gainNode;
+var visualizerMode = 4.0;
 
 window.onload = function() {
 	console.log('Welcome to the blood frenzy realtime visualizer!');
 	console.log('Only Chrome is supported at the moment');
+	console.log('Tempo defaults to 140BPM. Visualizer switches every 8 bars')
 	console.log('Controls:');
 	console.log('H: disable visualiztion entirely (panic button)');
 	console.log('M: Mute/unmute audio monitoring. Disabled by default');
+	console.log('C:Toggle forcing of full color visualizations');
+	console.log('1/2: -/+1 BPM to tempo');
+	console.log('Q/W: -/+10 BPM to tempo');
 
 	if (!desktop) {
 		$('#stop').hide();
@@ -62,9 +73,8 @@ window.onload = function() {
 				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 			}
 		}
-
 		// (un) mute audio
-		if (event.key.toLowerCase() === 'm') {
+		else if (event.key.toLowerCase() === 'm') {
 			
 			if (gainNode.gain.value === 0) {
 				console.log('Unmuting...');
@@ -73,6 +83,25 @@ window.onload = function() {
 				console.log('Muting...');
 				gainNode.gain.value = 0;
 			}
+		} else if (event.key.toLowerCase() === 'r') {
+			console.log('Resetting timer...');
+			tickCounter = -1;
+		} else if (event.key.toLowerCase() === 'c') {
+			console.log('Toggling force full color...', !forceColor);
+			forceColor = !forceColor;
+			tickCounter = -1;
+		} else if (event.key.toLowerCase() === '1') {
+			BPM = BPM - 1;
+			console.log('New tempo:', BPM);
+		} else if (event.key.toLowerCase() === '2') {
+			BPM = BPM + 1;
+			console.log('New tempo:', BPM);
+		} else if (event.key.toLowerCase() === 'q') {
+			BPM = BPM - 10;
+			console.log('New tempo:', BPM);
+		} else if (event.key.toLowerCase() === 'w') {
+			BPM = BPM + 10;
+			console.log('New tempo:', BPM);
 		}
 	});
 
@@ -206,8 +235,6 @@ Visualizer.prototype = {
 
 		//analyser.connect(audioContext.destination);
 		
-
-		
 		//then assign the buffer to the buffer source node
 		// if (buffer == null) {
 		// 	audioBufferSouceNode.stop();
@@ -254,7 +281,7 @@ Visualizer.prototype = {
 		var drawMeter = function() {
 
 			analyser.fftSize = 2048;
-			analyser.minDecibels = -80;
+			analyser.minDecibels = -90;
 			analyser.maxDecibels = -10;
 			var array = new Uint8Array(analyser.frequencyBinCount);
 			analyser.getByteFrequencyData(array);
@@ -291,10 +318,10 @@ Visualizer.prototype = {
 			bassValue = Math.max(0, 10 * (Math.exp(bassValue * 0.02) - 2));
 			kickValue = Math.max(0, 10 * (Math.exp((kickValue + 10) * 0.02) - 2));
 
-			console.log('sub', bassValue, 'kick', kickValue);
+			// console.log('sub', bassValue, 'kick', kickValue);
 
 			var rect = canvas.getBoundingClientRect();
-				bloodWidth = (rect.width / 2) - 290 + kickValue + bassValue;
+				bloodWidth = (rect.width / 2) - 285 + kickValue + bassValue;
 				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
 				bloodPower = Math.max((bassValue / 10), 3);
 				bloodCursor = bloodPower * 1.8 + 20;
@@ -354,7 +381,6 @@ if (desktop) {
 	], init);
 }
 
-
 function fail(el, msg, id) {
 	document.getElementById('video').style.display = 'block';
 }
@@ -389,6 +415,7 @@ function setup(width, height, singleComponentFboFormat){
 	if (!desktop) {
 		return;
 	}
+
 	canvas.width = width,
 	canvas.height = height;
 
@@ -470,7 +497,8 @@ function setup(width, height, singleComponentFboFormat){
 				scale: 1.0,
 				velocity: velocityFBO0,
 				source: velocityFBO0,
-				dt: options.step
+				dt: options.step,
+				visualizerMode: visualizerMode
 			},
 			output: velocityFBO1
 		}),
@@ -482,7 +510,8 @@ function setup(width, height, singleComponentFboFormat){
 				scale: -1.0,
 				velocity: velocityFBO0,
 				source: velocityFBO0,
-				dt: 1/60
+				dt: 1/60,
+				visualizerMode: visualizerMode
 			},
 			output: velocityFBO1
 		}),
@@ -500,7 +529,8 @@ function setup(width, height, singleComponentFboFormat){
 				px: px,
 				force: vec2.create([0.5, 0.2]),
 				center: vec2.create([0.1, 0.4]),
-				scale: vec2.create([options.cursor_size*px_x, options.cursor_size*px_y])
+				scale: vec2.create([options.cursor_size*px_x, options.cursor_size*px_y]),
+				visualizerMode: visualizerMode
 			},
 			output: velocityFBO1
 		}),
@@ -509,7 +539,8 @@ function setup(width, height, singleComponentFboFormat){
 			mesh: all,
 			uniforms: {
 				velocity: velocityFBO1,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode
 			},
 			output: divergenceFBO
 		}),
@@ -525,7 +556,8 @@ function setup(width, height, singleComponentFboFormat){
 				divergence: divergenceFBO,
 				alpha: -1.0,
 				beta: 0.25,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode
 			},
 			output: pressureFBO1
 		}),
@@ -539,7 +571,8 @@ function setup(width, height, singleComponentFboFormat){
 				divergence: divergenceFBO,
 				alpha: -1.0,
 				beta: 0.25,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode
 			},
 			output: pressureFBO1
 		}),
@@ -551,7 +584,8 @@ function setup(width, height, singleComponentFboFormat){
 				scale: 1.0,
 				pressure: pressureFBO0,
 				velocity: velocityFBO1,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode
 			},
 			output: velocityFBO0
 		}),
@@ -562,7 +596,8 @@ function setup(width, height, singleComponentFboFormat){
 				scale: -1.0,
 				pressure: pressureFBO0,
 				velocity: velocityFBO1,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode
 			},
 			output: velocityFBO0
 		}),
@@ -573,7 +608,9 @@ function setup(width, height, singleComponentFboFormat){
 			uniforms: {
 				velocity: velocityFBO0,
 				pressure: pressureFBO0,
-				px: px
+				px: px,
+				visualizerMode: visualizerMode,
+				color: forceColor || colorOn
 			},
 			output: null
 		});
@@ -583,11 +620,33 @@ function setup(width, height, singleComponentFboFormat){
 		y0 = bloodHeight;
 
 	clock.ontick = function(dt){
-
 		if (!renderBlood) {
 			return;
 		}
-		
+
+		tickCounter++;
+
+		if (tickCounter % resetRate === 0) {
+			console.log('reset');
+			tickCounter = 0;
+
+			var rect = canvas.getBoundingClientRect(),
+			width = rect.width * options.resolution,
+			height = rect.height * options.resolution;
+
+			gl.getExtension('OES_texture_float_linear');
+			var format = hasFloatLuminanceFBOSupport() ? gl.LUMINANCE : gl.RGBA,
+				onresize;
+
+			input.updateOffset();
+			window.clearInterval(intervalID);
+
+			visualizerMode = Math.floor(Math.random() * 10) + 1;
+			colorOn = Math.random() < 0.66;
+
+			setup(width, height, format);
+		}
+
 		var x1 = bloodWidth * options.resolution,
 			y1 = bloodHeight * options.resolution,
 			xd = x1-x0,
@@ -596,7 +655,6 @@ function setup(width, height, singleComponentFboFormat){
 		x0 = x1,
 		y0 = y1;
 		if(x0 === 0 && y0 === 0) xd = yd = 0;
-
 
 		vec2.set([xd*px_x*bloodCursor*bloodPower,
 				 -yd*px_y*bloodCursor*bloodPower], addForceKernel.uniforms.force);

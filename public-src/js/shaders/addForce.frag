@@ -5,6 +5,7 @@ uniform vec2 center;
 uniform vec2 scale;
 uniform vec2 px;
 varying vec2 uv;
+uniform float visualizerMode;
 
 void main(){
     float distance_ = 1.0-min(length((uv-center)/scale), 1.0);

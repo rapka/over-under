@@ -5,7 +5,6 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 var fs = require('fs');
-var probe = require('node-ffprobe');
 
 var app = express();
 
