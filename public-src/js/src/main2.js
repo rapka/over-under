@@ -43,7 +43,7 @@ var options = {
 var forceColor = false;
 var colorOn = false;
 var gainNode;
-var visualizerMode = 4.0;
+var visualizerMode = 1.0;
 
 window.onload = function() {
 	console.log('Welcome to the blood frenzy realtime visualizer!');
@@ -412,6 +412,7 @@ function init(){
 }
 
 function setup(width, height, singleComponentFboFormat){
+	console.log('mode', visualizerMode);
 	if (!desktop) {
 		return;
 	}
