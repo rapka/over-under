@@ -38,7 +38,7 @@ var releases = {
 		number: 'FRENZY001',
 		artist: 'Fallow',
 		title: 'Loco /  Touch Ya Knees',
-		date: 'XX/XX/2016',
+		date: '23/01/2017',
 		mp3: 'loco.mp3',
 		boomkat: 'http://www.boomkat.com',
 		bleep: 'http://www.bleep.com',
