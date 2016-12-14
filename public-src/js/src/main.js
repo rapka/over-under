@@ -38,7 +38,7 @@ var releases = {
 		title: 'Loco /  Touch Ya Knees',
 		date: '23/01/2016',
 		mp3: 'loco.mp3',
-		bandcamp: 'http://www.bandcamp.com'
+		bandcamp: 'http://bloodfrenzy.bandcamp.com'
 	}
 }
 
