@@ -9,8 +9,6 @@ if (window.matchMedia("screen and (max-device-width: 480px)").matches) {
 	desktop = false;
 }
 
-console.log('desktop mode', desktop);
-
 var intervalID;
 var audioBufferSouceNode;
 var currentTrack = 0;
@@ -38,11 +36,8 @@ var releases = {
 		number: 'FRENZY001',
 		artist: 'Fallow',
 		title: 'Loco /  Touch Ya Knees',
-		date: '23/01/2017',
+		date: '23/01/2016',
 		mp3: 'loco.mp3',
-		boomkat: 'http://www.boomkat.com',
-		bleep: 'http://www.bleep.com',
-		juno: 'http://www.junodownload.com',
 		bandcamp: 'http://www.bandcamp.com'
 	}
 }
@@ -58,7 +53,6 @@ window.onload = function() {
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext);
 
 	$('.info-link').click(function () {
-		console.log($(this)[0].id);
 		$('.info-link').removeClass('selected');
 		$('.site-section').removeClass('selected');
 		$('.' + $(this)[0].id + '-section').toggleClass('selected');
@@ -134,7 +128,6 @@ Visualizer.prototype = {
 	},
 	_addEventListner: function() {
 		var that = this;
-		var tracks = ['gaze.mp3'];
 
 		var listenButton = document.getElementById('listen-button');
 		listenButton.addEventListener("click", function() {
@@ -169,7 +162,6 @@ Visualizer.prototype = {
 				playing = true;
 			}
 			else if (!playing && offset == 0) {
-				console.log(startTime);
 				listenButton.innerHTML = 'Pause';
 				offset = 0;
 				startTime = Date.now();
@@ -291,12 +283,11 @@ Visualizer.prototype = {
 			bassValue = Math.max(0, 10 * (Math.exp(bassValue * 0.02) - 2));
 			kickValue = Math.max(0, 10 * (Math.exp((kickValue + 10) * 0.02) - 2));
 
-			//console.log('sub', bassValue, 'kick', kickValue);
 
 			var rect = canvas.getBoundingClientRect();
 			if (playing && !paused) {
 				bloodWidth = (rect.width / 2) - 300 + kickValue + bassValue;
-				bloodHeight = (rect.height / 2) - 130 + 1.3 * midValue - highValue;
+				bloodHeight = (rect.height / 2) - 125 + 1.3 * midValue - highValue;
 				bloodPower = Math.max((bassValue / 11), 3);
 				bloodCursor = bloodPower * 1.8 + 20;
 				options.mouse_force = bloodPower;
@@ -350,7 +341,6 @@ if (desktop) {
 
 	window.gl = gl;
 
-	console.log('loading shaders;');
 	loader.load([
 			'js/shaders/advect.frag',
 			'js/shaders/addForce.frag',
@@ -617,9 +607,7 @@ function setup(width, height, singleComponentFboFormat){
 			x0 = x1,
 			y0 = y1;
 			if(x0 === 0 && y0 === 0) xd = yd = 0;
-			console.log(x1);
-			console.log(y1);
-
+			
 			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
 					 -yd*px_y*70*(Math.random()*10 - 5)], addForceKernel.uniforms.force);
 			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
