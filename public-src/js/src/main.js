@@ -36,9 +36,10 @@ var releases = {
 		number: 'FRENZY001',
 		artist: 'Fallow',
 		title: 'Loco /  Touch Ya Knees',
-		date: '23/01/2016',
+		date: '23/01/2017',
 		mp3: 'loco.mp3',
-		bandcamp: 'http://bloodfrenzy.bandcamp.com'
+		redeye: 'http://www.redeyerecords.co.uk/vinyl/80832-frenzy001-fallow',
+		bandcamp: 'https://bloodfrenzy.bandcamp.com/releases'
 	}
 }
 
@@ -66,6 +67,7 @@ window.onload = function() {
 	$('#bandcamp').attr('href', releases[activeRelease].bandcamp);
 	$('#juno').attr('href', releases[activeRelease].juno);
 	$('#boomkat').attr('href', releases[activeRelease].boomkat);
+	$('#redeye').attr('href', releases[activeRelease].redeye);
 	$('#bleep').attr('href', releases[activeRelease].bleep);
 	$('#stop').click(function () {
 		renderBlood = !renderBlood;
