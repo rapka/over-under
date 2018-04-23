@@ -14,7 +14,7 @@ var audioBufferSouceNode;
 var currentTrack = 0;
 var offset = 0;
 var startTime = 0;
-var activeRelease = 1;
+var activeRelease = 2;
 var paused = false;
 var tickCounter = 0;
 
@@ -39,6 +39,15 @@ var releases = {
 		date: '23/01/2017',
 		mp3: 'loco.mp3',
 		redeye: 'http://www.redeyerecords.co.uk/vinyl/80832-frenzy001-fallow',
+		bandcamp: 'https://bloodfrenzy.bandcamp.com/releases'
+	},
+	2: {
+		number: 'FRENZY002',
+		artist: 'Splurt Diablo',
+		title: 'Amped / Irn Bru',
+		date: '07/05/2018',
+		mp3: 'amped.mp3',
+		redeye: 'https://www.redeyerecords.co.uk/vinyl/96419-frenzy002-splurt-diablo',
 		bandcamp: 'https://bloodfrenzy.bandcamp.com/releases'
 	}
 }
@@ -609,7 +618,7 @@ function setup(width, height, singleComponentFboFormat){
 			x0 = x1,
 			y0 = y1;
 			if(x0 === 0 && y0 === 0) xd = yd = 0;
-			
+
 			vec2.set([xd*px_x*60*(Math.random()*10 - 5),
 					 -yd*px_y*70*(Math.random()*10 - 5)], addForceKernel.uniforms.force);
 			vec2.set([x0*px_x*2-1.0, (y0*px_y*2-1.0)*-1], addForceKernel.uniforms.center);
