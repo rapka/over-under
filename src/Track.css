@@ -1,31 +1,23 @@
-.cover {
-  width: 600px;
-  height: 600px;
-  /*filter: blur(5px) opacity(40%);*/
-  border-radius: 50%;
-}
 
 .track {
   animation-name: trackFade;
+  filter: opacity(0%);
 }
 
 @keyframes trackFade {
   0% {
-    display: none;
     filter: opacity(0%);
   }
-  1% {
-    display: block;
+
+  3% {
+    filter: opacity(100%);
   }
 
-  50% {
-      ilter: opacity(100%);
+  97% {
+    filter: opacity(100%);
   }
 
-  99% {
-    filter: opacity(0%);
-  }
   100% {
-    display: none;
+    filter: opacity(0%);
   }
 }
