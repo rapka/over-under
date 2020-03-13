@@ -1,24 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
+import _ from 'lodash'
+
+import Track from './Track';
 import './App.css';
 
+const SAMPLE_COUNTS = [8, 9, 7];
+
 function App() {
+  let tracks = [];
+
+  _.each(SAMPLE_COUNTS, (count, i) => {
+   tracks.push(<Track track={i + 1} sampleCount={count} />)
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {tracks}
     </div>
   );
 }
