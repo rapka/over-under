@@ -13,6 +13,7 @@ class Track extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.setState({ visible: true });
+      console.log(`track ${this.props.track} starting`);
     }, (this.props.offset - 2) * 1000);
     setTimeout(() => {
       this.setState({ visible: false })
@@ -39,7 +40,8 @@ class Track extends React.Component {
       <div
         className="track"
         style={{
-          animationDelay: `${this.props.offset}s`,
+          // animationDelay: `${this.props.offset}s`,
+          animationDelay: `0s`,
           animationDuration: `${this.props.duration + 2}s`,
           //display: visible ? 'block' : 'none',
         }}
