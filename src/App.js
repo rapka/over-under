@@ -47,7 +47,15 @@ function App() {
   return (
     <div className="App">
       <Viz />
-      {tracks}
+      <div className="bg-container">
+        <img className="bg" src="/bg169repeat.png" />
+        <img className="bg2" src="/bg169repeat.png" />
+        <img className="bg3" src="/bg169repeat.png" />
+      </div>
+      <div className="track-container">
+        {tracks}
+      </div>
+      <img className="moon" src="/moon2back2.png" />
     </div>
   );
 }

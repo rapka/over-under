@@ -1,5 +1,83 @@
 .App {
   /*padding: 50px;*/
-  background: black;
+
   height: 100vh;
+  transform: translate3d(0, 0, 0);
+}
+
+.bg, .bg2, .bg3 {
+  position: absolute;
+  animation-name: glimmer;
+  animation-duration: 33s;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.bg2 {
+  transform: translateX(-100%);
+}
+
+
+.bg3 {
+  transform: translateX(100%);
+}
+
+.bg-container {
+
+  z-index: -1;
+  animation-name: slide;
+  animation-duration: 333s;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.moon {/*
+  content: '';
+  background-image: url('/moon.png');*/
+  z-index: 3;
+  width: 600px;
+  height: 600px;
+  display: block;
+  filter: opacity(0.5) contrast(1.4);
+  border-radius: 50%;
+  overflow: hidden;
+/*  background-size: contain;*/
+
+}
+
+.track-container {
+  background: black;
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  border-radius: 50%;
+  transform: translate3d(0, 0, 0);
+}
+
+
+@keyframes glimmer {
+  0% {
+    filter: brightness(0.8);
+  }
+
+  50% {
+    filter: brightness(2.5);
+  }
+
+  100% {
+    filter: brightness(0.8);
+  }
+}
+
+
+@keyframes slide {
+  0% {
+    transform: translate3d(5321px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-5321px, 0, 0);
+  }
 }
