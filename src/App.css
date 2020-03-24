@@ -27,15 +27,13 @@
 
   z-index: -1;
   animation-name: slide;
-  animation-duration: 333s;
+  animation-duration: 666s;
   animation-delay: 0s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-.moon {/*
-  content: '';
-  background-image: url('/moon.png');*/
+.moon {
   z-index: 3;
   width: 600px;
   height: 600px;
@@ -43,7 +41,6 @@
   filter: opacity(0.5) contrast(1.4);
   border-radius: 50%;
   overflow: hidden;
-/*  background-size: contain;*/
 
 }
 

@@ -141,7 +141,7 @@ class Viz extends React.Component {
     return (
       <div className="viz">
         <canvas id="canvas"></canvas>
-        <audio src="fullmix.wav" type="audio/mpeg" autoPlay ></audio>
+        <audio src="fullmix.mp3" type="audio/mpeg" autoPlay ></audio>
       </div>
     );
   }
