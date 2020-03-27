@@ -3,6 +3,8 @@ import _ from 'lodash'
 
 import Track from './Track';
 import Viz from './Viz';
+import TITLES from './titles';
+
 import './App.css';
 
 const SAMPLE_COUNTS = [8, 9, 7];
@@ -59,7 +61,7 @@ function App() {
           <span className="text-black">College</span>
           <span className="text-white"> Hill</span>
         </div>
-        <div className="artist">
+        <div className="album">
           <span className="text-black">Overground</span>
           <span className="text-white"> Underground</span>
         </div>
