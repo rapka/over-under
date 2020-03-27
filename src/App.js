@@ -40,22 +40,30 @@ function App() {
   ))
   });
 
-  if (!playing) {
-    return <div className="App" />;
-  }
-
   return (
     <div className="App">
-      <Viz />
+      {playing ? <Viz /> : null}
       <div className="bg-container">
         <img className="bg" src="/bg169repeat.png" />
         <img className="bg2" src="/bg169repeat.png" />
         <img className="bg3" src="/bg169repeat.png" />
       </div>
-      <div className="track-container">
-        {tracks}
-      </div>
+      <div className="moon-container">
+        <div className="track-container">
+          {playing ? tracks : null}
+        </div>
       <img className="moon" src="/moon2back2.png" />
+      </div>
+      <div className="text-container">
+        <div className="artist">
+          <span className="text-black">College</span>
+          <span className="text-white"> Hill</span>
+        </div>
+        <div className="artist">
+          <span className="text-black">Overground</span>
+          <span className="text-white"> Underground</span>
+        </div>
+      </div>
     </div>
   );
 }

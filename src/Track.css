@@ -3,9 +3,8 @@
   animation-name: trackFade;
   filter: opacity(0%);
   position: absolute;
-  top: 0;
   height: 600px;
-    width: 600px;
+  width: 600px;
   border-radius: 50%;
   transform: translate3d(0, 0, 0);
 }
