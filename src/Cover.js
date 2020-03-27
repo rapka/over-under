@@ -7,7 +7,8 @@ function Cover(props) {
     <div
       className="cover-container"
       style={{
-        animationDuration: `${props.sample * 2000}ms`,
+        animationDuration: `${(props.sample) * 2000}ms`,
+        // animationDelay: `${(props.samples - props.sample) * -1000}ms`,
         animationName: props.backward ? 'backward' : 'forward'
       }}
     >

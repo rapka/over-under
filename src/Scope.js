@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 
-import './Viz.css';
+import './Scope.css';
 
 
 let WIDTH = 600;
@@ -30,7 +30,7 @@ const hsvToRgb = (h, s, v) => {
 };
 
 
-class Viz extends React.Component {
+class Scope extends React.Component {
   constructor(props) {
     super(props);
     this.state = { visible: false };
@@ -148,4 +148,4 @@ class Viz extends React.Component {
 
 }
 
-export default Viz;
+export default Scope;
