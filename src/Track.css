@@ -1,11 +1,10 @@
 .track, .transition-overlay {
-/*  filter: opacity(0%);
-*/  position: absolute;
+  position: absolute;
   height: 600px;
   width: 600px;
   border-radius: 50%;
   overflow: hidden;
-  /*transform: translate3d(0, 0, 0);*/
+  transform: translate3d(0, 0, 0);
 }
 
 .transition-overlay {
@@ -15,27 +14,24 @@
 
 @keyframes trackFade {
   0% {
-    /*opacity: 1;*/
 /*    filter: opacity(0%);
 */
-  filter: opacity(100%);
+    filter: opacity(100%);
   }
 
-  3% {
+  2% {
     /*opacity: 0;*/
     /*filter: opacity(100%);*/
     filter: opacity(0%);
   }
 
-  97% {
+  98% {
     filter: opacity(0%);
-    /*opacity: 0;*/
     /*filter: opacity(100%);*/
   }
 
   100% {
     filter: opacity(100%);
-    /*opacity: 1;*/
     /*filter: opacity(0%);*/
   }
 }

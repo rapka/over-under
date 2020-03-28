@@ -1,0 +1,10 @@
+.currentTrack {
+  text-transform: capitalize;
+    font-family: 'Rock Salt', cursive;
+    padding-left: 605px;
+    padding-top: 375px;
+    font-size: 2.75rem;
+    position: absolute;
+    bottom: -4px;
+    left: 370px;
+}

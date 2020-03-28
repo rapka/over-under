@@ -1,9 +1,8 @@
 .text-container {
   position: absolute;
   font-size: 3rem;
-  top: 370px;
-  left: 372px;
-
+  top: 401px;
+  left: 370px;
 }
 
 .artist, .album {
@@ -24,12 +23,4 @@
 
 .artist {
   padding-left: 106px;
-}
-
-.currentTrack {
-  text-transform: capitalize;
-  font-family: 'Rock Salt', cursive;
-  font-size: 2rem;
-  padding-left: 500px;
-  padding-top: 250px;
 }

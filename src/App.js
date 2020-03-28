@@ -4,6 +4,7 @@ import _ from 'lodash'
 import Track from './Track';
 import Scope from './Scope';
 import TextOverlay from './TextOverlay';
+import TrackOverlay from './TrackOverlay';
 import TITLES from './titles';
 
 import './App.css';
@@ -50,14 +51,14 @@ function App() {
 
   _.each(SAMPLE_COUNTS, (count, i) => {
    tracks.push((
-    <Track
-      key={i}
-      track={i + 1}
-      sampleCount={count}
-      duration={DURATIONS[i]}
-      offset={_.sum(DURATIONS.slice(0, i))}
-    />
-  ))
+      <Track
+        key={i}
+        track={i + 1}
+        sampleCount={count}
+        duration={DURATIONS[i]}
+        offset={_.sum(DURATIONS.slice(0, i))}
+      />
+    ));
   });
 
   return (
@@ -74,7 +75,8 @@ function App() {
         </div>
         <img className="moon" src="/moon2back2.png" />
       </div>
-      <TextOverlay playing={playing} track={track} />
+      <TextOverlay />
+      <TrackOverlay track={track} />
     </div>
   );
 }

@@ -3,7 +3,6 @@ import _ from 'lodash';
 
 import './Scope.css';
 
-
 let WIDTH = 1920 / 2;
 let HEIGHT = 1080;
 let H = 0;
@@ -36,14 +35,14 @@ class Scope extends React.Component {
     this.state = { visible: false };
   }
 
-  // componentDidUpdate() {
-  //   HEIGHT = window.innerHeight / 2;
-  //   WIDTH = window.innerWidth;
-  // }
+  componentDidUpdate() {
+    HEIGHT = window.innerHeight;
+    WIDTH = window.innerWidth;
+  }
 
   componentDidMount() {
-
-
+    HEIGHT = window.innerHeight;
+    WIDTH = window.innerWidth;
     const audioElement = document.querySelector('audio');
 
     var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -56,11 +55,11 @@ class Scope extends React.Component {
     // source = audioCtx.createMediaStreamSource(stream);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
-    let maxx = 0;
 
     analyser.fftSize = 2048;
-          analyser.minDecibels = -80;
-      // analyser.maxDecibels = -10;
+    analyser.minDecibels = -80;
+    // analyser.maxDecibels = -5;
+
     var bufferLength = analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
     const bassArray = new Uint8Array(bufferLength);
@@ -71,6 +70,7 @@ class Scope extends React.Component {
       HEIGHT = window.innerHeight;
       WIDTH = window.innerWidth;
       H = (H + 0.5) % 360;
+
       canvasCtx.canvas.width = WIDTH;
       canvasCtx.canvas.height = HEIGHT;
 
@@ -87,20 +87,22 @@ class Scope extends React.Component {
       canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
       canvasCtx.lineWidth = Math.max(bassValue / 100, 1);
       let rgb = hsvToRgb((H / 360),1 , 1);
+
+      const Y_OFFSET = 50;
+
       canvasCtx.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${0.8 - bassNormalized * 1.33})`;
       canvasCtx.beginPath();
       var sliceWidth = WIDTH * 1.0 / bufferLength;
       let x = 0;
 
-      for(var i = 0; i < bufferLength - 1; i++) {
-
+      for(var i = 0; i < bufferLength; i++) {
         var v = dataArray[i] / 128.0;
         var y = v * HEIGHT / 4;
 
         if(i === 0) {
-          canvasCtx.moveTo(x, y);
+          canvasCtx.moveTo(x, y + Y_OFFSET);
         } else {
-          canvasCtx.lineTo(x, y);
+          canvasCtx.lineTo(x, y + Y_OFFSET);
         }
 
         x += sliceWidth;
@@ -116,14 +118,13 @@ class Scope extends React.Component {
       x = 0;
 
       for(var i = 0; i < bufferLength; i++) {
-
         var v = dataArray[i] / 128.0;
         var y = v * HEIGHT / 4;
 
         if(i === 0) {
-          canvasCtx.moveTo(x, y);
+          canvasCtx.moveTo(x, y + + Y_OFFSET);
         } else {
-          canvasCtx.lineTo(x, y - 5);
+          canvasCtx.lineTo(x, y + Y_OFFSET - 5);
         }
 
         x += sliceWidth;

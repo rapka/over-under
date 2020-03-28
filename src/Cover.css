@@ -1,6 +1,5 @@
 .cover {
   width: 600px;
   height: 600px;
-  /*filter: blur(5px) opacity(40%);*/
   border-radius: 50%;
 }

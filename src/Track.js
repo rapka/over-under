@@ -19,7 +19,6 @@ class Track extends React.Component {
     }, ( this.props.offset + this.props.duration ) * 1000);
   }
 
-
   render() {
     let covers = [];
 
