@@ -65,9 +65,9 @@ function App() {
     <div className="App">
       {playing ? <Scope /> : null}
       <div className="bg-container">
-        <img className="bg" src="/bg169repeat.png" />
-        <img className="bg2" src="/bg169repeat.png" />
-        <img className="bg3" src="/bg169repeat.png" />
+        <img className="bg" src="/bg-repeat.png" />
+        <img className="bg2" src="/bg-repeat.png" />
+        <img className="bg3" src="/bg-repeat.png" />
       </div>
       <div className="moon-container">
         <div className="track-container">

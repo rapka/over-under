@@ -8,7 +8,6 @@ const maxOpacity = (sample, count) => {
   const newMax = 0.95;
   const ratio = (count - sample) / count;
   const adjusted = (ratio * (newMax - newMin)) + newMin;
-  console.log('wtf', adjusted);
   return adjusted * 100;
 };
 
