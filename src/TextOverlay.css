@@ -3,6 +3,7 @@
   font-size: 3rem;
   top: 401px;
   left: 370px;
+  z-index: 10;
 }
 
 .artist, .album {
