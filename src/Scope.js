@@ -4,8 +4,8 @@ import _ from 'lodash';
 import './Scope.css';
 
 
-let WIDTH = 600;
-let HEIGHT = 200;
+let WIDTH = 1920 / 2;
+let HEIGHT = 1080;
 let H = 0;
 
 const hsvToRgb = (h, s, v) => {
@@ -36,14 +36,13 @@ class Scope extends React.Component {
     this.state = { visible: false };
   }
 
-  componentDidUpdate() {
-    HEIGHT = window.innerHeight / 2;
-    WIDTH = window.innerWidth;
-  }
+  // componentDidUpdate() {
+  //   HEIGHT = window.innerHeight / 2;
+  //   WIDTH = window.innerWidth;
+  // }
 
   componentDidMount() {
-    HEIGHT = window.innerHeight / 2;
-    WIDTH = window.innerWidth;
+
 
     const audioElement = document.querySelector('audio');
 
@@ -106,7 +105,7 @@ class Scope extends React.Component {
 
         x += sliceWidth;
       }
-      canvasCtx.lineTo(canvas.width, canvas.height / 2);
+
       canvasCtx.stroke();
 
       let H2 = (H + 180) % 360;
@@ -130,7 +129,6 @@ class Scope extends React.Component {
         x += sliceWidth;
       }
 
-       canvasCtx.lineTo(canvas.width, canvas.height/2);
        canvasCtx.stroke();
     };
 

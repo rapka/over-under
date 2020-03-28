@@ -1,8 +1,19 @@
 .App {
   /*padding: 50px;*/
-
+  max-width: 1920px;
+  max-height: 1080px;
+  overflow: hidden;
   height: 100vh;
   transform: translate3d(0, 0, 0);
+}
+
+.App::after {
+  content: '';
+  width: 1080px;
+  border-right: 1px solid red;
+  height: 1080px;
+  position: absolute;
+  top: 0;
 }
 
 .bg, .bg2, .bg3 {
@@ -53,7 +64,7 @@
 }
 
 .moon-container {
-  padding: 50px;
+  padding: 95px 75px;
 }
 
 @keyframes glimmer {

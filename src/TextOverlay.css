@@ -1,8 +1,8 @@
 .text-container {
   position: absolute;
   font-size: 3rem;
-  top: 307px;
-  left: 345px;
+  top: 370px;
+  left: 372px;
 
 }
 
@@ -31,5 +31,5 @@
   font-family: 'Rock Salt', cursive;
   font-size: 2rem;
   padding-left: 500px;
-  padding-top: 50px;
+  padding-top: 250px;
 }

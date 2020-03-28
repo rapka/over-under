@@ -3,7 +3,7 @@ export default [
 	'Rockism',
 	'Party\'s Over',
 	'One Night Enemy Stand',
-	'The Plot Thicken',
+	'The Plot Thickens',
 	'Building Genders',
 	'Charmed, I\'m Sure',
 	'Chase Your Nightmares',
