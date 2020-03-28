@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import _ from 'lodash';
 
 import './Scope.css';
 
@@ -22,7 +23,6 @@ const hsvToRgb = (h, s, v) => {
         case 3: r = p; g = q; b = v; break;
         case 4: r = t; g = p; b = v; break;
         case 5: r = v; g = p; b = q; break;
-        default: r = v; g = p; b = q; break;
     }
 
     return [r * 255, g * 255, b * 255];
@@ -81,6 +81,7 @@ class Scope extends React.Component {
       canvasCtx.canvas.height = HEIGHT;
 
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      var drawVisual = requestAnimationFrame(draw);
       analyser.getByteTimeDomainData(dataArray);
       analyser.getByteFrequencyData(bassArray);
 
@@ -93,7 +94,7 @@ class Scope extends React.Component {
       canvasCtx.lineWidth = Math.max(bassValue / 100, 1);
       let rgb = hsvToRgb((H / 360),1 , 1);
 
-      const Y_OFFSET = 50;
+      const Y_OFFSET = 64;
 
       canvasCtx.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${0.8 - bassNormalized * 1.33})`;
       canvasCtx.beginPath();
@@ -101,9 +102,8 @@ class Scope extends React.Component {
       let x = 0;
       let y = 0;
       let v = 0;
-      let i = 0;
 
-      for(i = 0; i < bufferLength; i++) {
+      for(let i = 0; i < bufferLength; i++) {
         v = dataArray[i] / 128.0;
         y = v * HEIGHT / 4;
 
@@ -125,7 +125,7 @@ class Scope extends React.Component {
       canvasCtx.beginPath();
       x = 0;
 
-      for(i = 0; i < bufferLength; i++) {
+      for(let i = 0; i < bufferLength; i++) {
         v = dataArray[i] / 128.0;
         y = v * HEIGHT / 4;
 

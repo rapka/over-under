@@ -24,7 +24,7 @@ function App() {
       }
       setTrack(trackNumber + 1);
       startTrackTimer(trackNumber + 1);
-    }, (DURATIONS[trackNumber] + 1) * 1000);
+    }, (DURATIONS[trackNumber] + 0.5) * 1000);
   };
 
   if (playing && track === 0) {
