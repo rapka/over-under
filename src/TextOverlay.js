@@ -17,7 +17,7 @@ function TextOverlay(props) {
         <span className="text-white"> Underground</span>
       </div>
       <div className="currentTrack">
-        <span className="text-white">{props.track + 1}. {TITLES[props.track]}</span>
+        {props.playing ? <span className="text-white">{props.track + 1}. {TITLES[props.track]}</span> : null}
       </div>
     </div>
   );

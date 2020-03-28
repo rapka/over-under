@@ -1,17 +1,42 @@
 import React from 'react';
+import styled, { keyframes, css } from "styled-components";
 
 import './Cover.css';
 
+const maxOpacity = (sample, count) => {
+  const newMin = 0.15;
+  const newMax = 0.95;
+  const ratio = (count - sample) / count;
+  const adjusted = (ratio * (newMax - newMin)) + newMin;
+  console.log('wtf', adjusted);
+  return adjusted * 100;
+};
+
 function Cover(props) {
+  const animation = keyframes`
+    {
+        0% {
+            transform: rotate(${props.backward ? 0 : 360}deg) translate3d(0, 0, 0);
+            filter: blur(10px) opacity(0%);
+        }
+        50% {
+            filter: blur(5px) opacity(${maxOpacity(props.sample, props.samples)}%);
+        }
+        100% {
+            transform: rotate(${props.backward ? 360 : 0}deg) translate3d(0, 0, 0);
+            filter: blur(10px) opacity(0%);
+        }
+    }
+  `;
+
+  const Container = styled.div`
+        animation: ${animation} ${(props.sample + 1) * 2000}ms linear infinite;
+        position: absolute;
+      `;
+
   return (
-    <div
-      className="cover-container"
-      style={{
-        animationDuration: `${(props.sample) * 2000}ms`,
-        // animationDelay: `${(props.samples - props.sample) * -1000}ms`,
-        animationName: props.backward ? 'backward' : 'forward'
-      }}
-    >
+
+    <Container>
       <img
         src={`/covers/${props.track}/${props.sample}.jpg`}
         className="cover"
@@ -19,7 +44,7 @@ function Cover(props) {
           transform: `rotate(${(360 / props.samples) * props.sample}deg)`,
         }}
       />
-    </div>
+    </Container>
   );
 }
 

@@ -29,4 +29,7 @@
 .currentTrack {
   text-transform: capitalize;
   font-family: 'Rock Salt', cursive;
+  font-size: 2rem;
+  padding-left: 500px;
+  padding-top: 50px;
 }

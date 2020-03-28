@@ -19,7 +19,7 @@ function App() {
 
   const startTrackTimer = (trackNumber) => {
     setTimeout(() => {
-      if (trackNumber === DURATIONS.length) {
+      if (trackNumber === DURATIONS.length - 1) {
         return;
       }
       setTrack(trackNumber + 1);
@@ -74,8 +74,7 @@ function App() {
         </div>
         <img className="moon" src="/moon2back2.png" />
       </div>
-
-      {playing ? <TextOverlay track={track} /> : null}
+      <TextOverlay playing={playing} track={track} />
     </div>
   );
 }
