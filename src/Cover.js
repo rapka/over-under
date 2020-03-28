@@ -29,7 +29,7 @@ function Cover(props) {
   `;
 
   const Container = styled.div`
-        animation: ${animation} ${(props.sample + 1) * 2000}ms linear infinite;
+        animation: ${animation} ${(props.sample + 2) * 2000}ms linear infinite;
         position: absolute;
       `;
 

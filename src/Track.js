@@ -13,7 +13,7 @@ class Track extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.setState({ visible: true });
-    }, (this.props.offset + 1) * 1000);
+    }, (this.props.offset) * 1000);
     setTimeout(() => {
       this.setState({ visible: false })
     }, ( this.props.offset + this.props.duration ) * 1000);

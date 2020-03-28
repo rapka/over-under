@@ -8,7 +8,7 @@ import TrackOverlay from './TrackOverlay';
 
 import './App.css';
 
-const SAMPLE_COUNTS = [8, 9, 7, 7, 4, 3, 9, 4];
+const SAMPLE_COUNTS = [8, 9, 7, 7, 4, 3, 9, 4, 3, 10, 4, 8, 8];
 const DURATIONS = [84, 145, 96, 124, 80, 46, 83, 128, 150, 152, 119, 137, 147, 135, 129, 123, 192];
 // const DURATIONS = [10, 10, 96, 124, 80, 46, 83, 128, 150, 152, 119, 137, 147, 135, 129, 123, 192];
 
@@ -24,7 +24,7 @@ function App() {
       }
       setTrack(trackNumber + 1);
       startTrackTimer(trackNumber + 1);
-    }, (DURATIONS[trackNumber] + 0.5) * 1000);
+    }, (DURATIONS[trackNumber]) * 1000);
   };
 
   if (playing && track === 0) {
