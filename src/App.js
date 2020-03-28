@@ -5,7 +5,6 @@ import Track from './Track';
 import Scope from './Scope';
 import TextOverlay from './TextOverlay';
 import TrackOverlay from './TrackOverlay';
-import TITLES from './titles';
 
 import './App.css';
 
@@ -63,7 +62,7 @@ function App() {
 
   return (
     <div className="App">
-      {playing ? <Scope /> : null}
+      <Scope playing={playing} />
       <div className="bg-container">
         <img className="bg" src="/bg-repeat.png" />
         <img className="bg2" src="/bg-repeat.png" />

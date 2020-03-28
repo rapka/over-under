@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import _ from 'lodash';
+import React from 'react';
 
 import './Scope.css';
 
@@ -23,6 +22,7 @@ const hsvToRgb = (h, s, v) => {
         case 3: r = p; g = q; b = v; break;
         case 4: r = t; g = p; b = v; break;
         case 5: r = v; g = p; b = q; break;
+        default: r = v; g = p; b = q; break;
     }
 
     return [r * 255, g * 255, b * 255];
@@ -33,17 +33,21 @@ class Scope extends React.Component {
   constructor(props) {
     super(props);
     this.state = { visible: false };
+    this.player = React.createRef();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
+    if (!prevProps.playing && this.props.playing) {
+      this.player.current.play();
+    }
   }
 
   componentDidMount() {
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
-    const audioElement = document.querySelector('audio');
+    const audioElement = this.player.current;
 
     var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     var analyser = audioCtx.createAnalyser();
@@ -52,7 +56,6 @@ class Scope extends React.Component {
     const canvasCtx = canvas.getContext('2d');
 
     let source = audioCtx.createMediaElementSource(audioElement);
-    // source = audioCtx.createMediaStreamSource(stream);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
 
@@ -66,16 +69,18 @@ class Scope extends React.Component {
 
     canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    function draw() {
+    const draw = () => {
       HEIGHT = window.innerHeight;
       WIDTH = window.innerWidth;
-      H = (H + 0.5) % 360;
+
+      if (this.props.playing) {
+        H = (H + 0.5) % 360;
+      }
 
       canvasCtx.canvas.width = WIDTH;
       canvasCtx.canvas.height = HEIGHT;
 
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-      var drawVisual = requestAnimationFrame(draw);
       analyser.getByteTimeDomainData(dataArray);
       analyser.getByteFrequencyData(bassArray);
 
@@ -94,10 +99,13 @@ class Scope extends React.Component {
       canvasCtx.beginPath();
       var sliceWidth = WIDTH * 1.0 / bufferLength;
       let x = 0;
+      let y = 0;
+      let v = 0;
+      let i = 0;
 
-      for(var i = 0; i < bufferLength; i++) {
-        var v = dataArray[i] / 128.0;
-        var y = v * HEIGHT / 4;
+      for(i = 0; i < bufferLength; i++) {
+        v = dataArray[i] / 128.0;
+        y = v * HEIGHT / 4;
 
         if(i === 0) {
           canvasCtx.moveTo(x, y + Y_OFFSET);
@@ -117,9 +125,9 @@ class Scope extends React.Component {
       canvasCtx.beginPath();
       x = 0;
 
-      for(var i = 0; i < bufferLength; i++) {
-        var v = dataArray[i] / 128.0;
-        var y = v * HEIGHT / 4;
+      for(i = 0; i < bufferLength; i++) {
+        v = dataArray[i] / 128.0;
+        y = v * HEIGHT / 4;
 
         if(i === 0) {
           canvasCtx.moveTo(x, y + + Y_OFFSET);
@@ -140,7 +148,12 @@ class Scope extends React.Component {
     return (
       <div className="viz">
         <canvas id="canvas"></canvas>
-        <audio src="fullmix.mp3" type="audio/mpeg" autoPlay ></audio>
+        <audio
+          ref={this.player}
+          src="fullmix.mp3"
+          type="audio/mpeg"
+          preload="auto"
+        />
       </div>
     );
   }

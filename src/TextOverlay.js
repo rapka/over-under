@@ -1,7 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import _ from 'lodash'
-
-import TITLES from './titles';
+import React from 'react';
 
 import './TextOverlay.css';
 
