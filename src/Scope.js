@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import _ from 'lodash';
+import React from 'react';
 
 import './Scope.css';
 
@@ -34,13 +33,17 @@ class Scope extends React.Component {
     super(props);
     this.state = { visible: false };
     this.player = React.createRef();
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
   componentDidUpdate(prevProps) {
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
     if (!prevProps.playing && this.props.playing) {
-      this.player.current.play();
+      this.audioCtx.resume().then(() => {
+        this.player.current.play();
+      });
+
     }
   }
 
@@ -48,8 +51,8 @@ class Scope extends React.Component {
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
     const audioElement = this.player.current;
+    let audioCtx = this.audioCtx;
 
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     var analyser = audioCtx.createAnalyser();
 
     const canvas = document.getElementById('canvas');
@@ -79,9 +82,10 @@ class Scope extends React.Component {
 
       canvasCtx.canvas.width = WIDTH;
       canvasCtx.canvas.height = HEIGHT;
-
       canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-      var drawVisual = requestAnimationFrame(draw);
+
+      requestAnimationFrame(draw);
+
       analyser.getByteTimeDomainData(dataArray);
       analyser.getByteFrequencyData(bassArray);
 
