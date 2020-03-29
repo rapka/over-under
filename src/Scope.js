@@ -134,7 +134,7 @@ class Scope extends React.Component {
         y = v * HEIGHT / 4;
 
         if(i === 0) {
-          canvasCtx.moveTo(x, y + + Y_OFFSET);
+          canvasCtx.moveTo(x, y + + Y_OFFSET - 5);
         } else {
           canvasCtx.lineTo(x, y + Y_OFFSET - 5);
         }
