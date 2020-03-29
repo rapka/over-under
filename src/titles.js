@@ -5,7 +5,7 @@ export default [
 	'One Night Enemy Stand',
 	'The Plot Thickens',
 	'Building Genders',
-	'Charmed, I\'m Sure',
+	'Charmed, I\'m Sure (Underwater Mix)',
 	'Chase Your Nightmares',
 	'Tease and Denial',
 	'Star-Lord',

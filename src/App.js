@@ -8,7 +8,7 @@ import TrackOverlay from './TrackOverlay';
 
 import './App.css';
 
-const SAMPLE_COUNTS = [8, 9, 7, 7, 4, 3, 9, 4, 3, 10, 4, 8, 8];
+const SAMPLE_COUNTS = [8, 9, 6, 7, 4, 3, 9, 4, 8, 8, 5, 6, 5, 5, 8, 6, 10];
 const DURATIONS = [84, 145, 96, 124, 80, 46, 83, 128, 150, 152, 119, 137, 147, 135, 129, 123, 192];
 // const DURATIONS = [10, 10, 96, 124, 80, 46, 83, 128, 150, 152, 119, 137, 147, 135, 129, 123, 192];
 
