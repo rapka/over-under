@@ -1,8 +1,7 @@
 .currentTrack {
   font-family: 'Rock Salt', cursive;
-  padding-top: 375px;
-  font-size: 2.75rem;
+  font-size: 2.7rem;
   position: absolute;
   bottom: -4px;
-  left: 870px;
+  left: 875px;
 }
