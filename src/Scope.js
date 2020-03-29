@@ -64,7 +64,6 @@ class Scope extends React.Component {
 
     analyser.fftSize = 2048;
     analyser.minDecibels = -80;
-    analyser.maxDecibels = 3;
 
     var bufferLength = analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
