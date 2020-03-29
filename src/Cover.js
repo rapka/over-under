@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import './Cover.css';
 
 const maxOpacity = (sample, count) => {
-  const newMin = 0.2;
+  const newMin = 0.3;
   const newMax = 1;
   const ratio = (count - sample) / count;
   const adjusted = (ratio * (newMax - newMin)) + newMin;
@@ -29,7 +29,7 @@ function Cover(props) {
   `;
 
   const Container = styled.div`
-        animation: ${animation} ${(props.sample + 2) * 2500}ms linear infinite;
+        animation: ${animation} ${(props.sample + 3) * 3000}ms linear infinite;
         position: absolute;
       `;
 
