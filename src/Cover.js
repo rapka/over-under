@@ -16,14 +16,14 @@ function Cover(props) {
     {
         0% {
             transform: rotate(${props.backward ? 0 : 360}deg) translate3d(0, 0, 0);
-            filter: blur(10px) opacity(10%);
+            filter: blur(11px) opacity(10%);
         }
         50% {
-            filter: blur(5px) opacity(${maxOpacity(props.sample - 1, props.samples)}%);
+            filter: blur(7px) opacity(${maxOpacity(props.sample - 1, props.samples)}%);
         }
         100% {
             transform: rotate(${props.backward ? 360 : 0}deg) translate3d(0, 0, 0);
-            filter: blur(10px) opacity(10%);
+            filter: blur(11px) opacity(10%);
         }
     }
   `;
