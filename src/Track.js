@@ -27,7 +27,7 @@ class Track extends React.Component {
         <Cover
           key={n}
           track={this.props.track}
-          sample={n + 1}
+          sample={this.props.sampleCount - n}
           samples={this.props.sampleCount}
           backward={n % 2 === 0}
         />
