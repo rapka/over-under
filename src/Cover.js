@@ -19,7 +19,7 @@ function Cover(props) {
             filter: blur(11px) opacity(10%);
         }
         50% {
-            filter: blur(7px) opacity(${maxOpacity(props.sample - 1, props.samples)}%);
+            filter: blur(6px) opacity(${maxOpacity(props.sample - 1, props.samples)}%);
         }
         100% {
             transform: rotate(${props.backward ? 360 : 0}deg) translate3d(0, 0, 0);
