@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import './Cover.css';
 
 const maxOpacity = (sample, count) => {
-  const newMin = 0.15;
+  const newMin = 0.1;
   const newMax = 1;
   const ratio = (count - sample) / count;
   const adjusted = (ratio * (newMax - newMin)) + newMin;
@@ -12,14 +12,15 @@ const maxOpacity = (sample, count) => {
 };
 
 function Cover(props) {
+  const max = maxOpacity(props.samples - props.sample - 1, props.samples);
   const animation = keyframes`
     {
         0% {
             transform: rotate(${props.backward ? 0 : 360}deg) translate3d(0, 0, 0);
             filter: blur(11px) opacity(10%);
         }
-        50% {
-            filter: blur(6px) opacity(${maxOpacity(props.samples - props.sample - 1, props.samples)}%);
+        30% {
+            filter: blur(6px) opacity(${max}%);
         }
         100% {
             transform: rotate(${props.backward ? 360 : 0}deg) translate3d(0, 0, 0);
@@ -29,7 +30,7 @@ function Cover(props) {
   `;
 
   const Container = styled.div`
-        animation: ${animation} ${(props.samples - props.sample + 3) * 3000}ms linear infinite;
+        animation: ${animation} ${(props.samples - props.sample + 3) * (props.backward ? 3000 : 2000)}ms linear infinite;
         position: absolute;
       `;
 

@@ -50,7 +50,7 @@
   width: 600px;
   height: 600px;
   display: block;
-  filter: opacity(0.5) contrast(1.4);
+  filter: opacity(0.4) contrast(1.5);
   border-radius: 50%;
   overflow: hidden;
 }
