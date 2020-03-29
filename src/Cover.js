@@ -8,7 +8,7 @@ const maxOpacity = (sample, count) => {
   const newMax = 1;
   const ratio = (count - sample) / count;
   const adjusted = (ratio * (newMax - newMin)) + newMin;
-  return adjusted * 100;
+  return parseInt(adjusted * 100);
 };
 
 function Cover(props) {
@@ -16,20 +16,20 @@ function Cover(props) {
     {
         0% {
             transform: rotate(${props.backward ? 0 : 360}deg) translate3d(0, 0, 0);
-            filter: blur(10px) opacity(0%);
+            filter: blur(10px) opacity(10%);
         }
         50% {
-            filter: blur(5px) opacity(${maxOpacity(props.sample, props.samples)}%);
+            filter: blur(5px) opacity(${maxOpacity(props.sample - 1, props.samples)}%);
         }
         100% {
             transform: rotate(${props.backward ? 360 : 0}deg) translate3d(0, 0, 0);
-            filter: blur(10px) opacity(0%);
+            filter: blur(10px) opacity(10%);
         }
     }
   `;
 
   const Container = styled.div`
-        animation: ${animation} ${(props.sample + 2) * 2000}ms linear infinite;
+        animation: ${animation} ${(props.sample + 2) * 2500}ms linear infinite;
         position: absolute;
       `;
 

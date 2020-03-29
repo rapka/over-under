@@ -94,7 +94,7 @@ class Scope extends React.Component {
 
       canvasCtx.fillStyle = 'rgba(200, 200, 200, 0)';
       canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-      canvasCtx.lineWidth = Math.max(bassValue / 100, 1);
+      canvasCtx.lineWidth = Math.max(bassValue / 100, 2);
       let rgb = hsvToRgb((H / 360),1 , 1);
 
       const Y_OFFSET = 64;
