@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import './Cover.css';
 
 const maxOpacity = (sample, count) => {
-  const newMin = 0.3;
+  const newMin = 0.2;
   const newMax = 1;
   const ratio = (count - sample) / count;
   const adjusted = (ratio * (newMax - newMin)) + newMin;
